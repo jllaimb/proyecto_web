@@ -31,14 +31,13 @@ if ($productos != null) {
     <meta name="author" content="" />
     <title>Clean Blog</title>
     <link rel='stylesheet' type='text/css' media='screen' href='../css/estiloCarrito.css'>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
     <!-- Bootstrap Core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet" />
 
     <!-- Theme CSS -->
@@ -60,10 +59,7 @@ if ($productos != null) {
 </head>
 
 <body style="background-color: #242424">
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 
     <!------ Include the above in your HEAD tag ---------->
     <link rel="stylesheet" href="../css/login.css">
@@ -83,8 +79,9 @@ if ($productos != null) {
             <li><a href="../index.php">Inicio</a></li>
             <li><a href="../html/login.php">Login</a></li>
             <li><a href="contacto.php">Contacto</a></li>
-            <li><a class="active" href="tienda.php">Tienda</a></li>
-            <li><a href="#">Carrito <span id="num_cart" class="badget bg-secundary"><?php echo $num_cart; ?></span></a></li>
+            <li><a href="tienda.php">Tienda</a></li>
+            <li><a class="active" href="carrito.php">Carrito <span id="num_cart" class="badget bg-secundary"><?php echo $num_cart; ?></span></a></li></a></li>
+            
         </ul>
     </nav>
 
@@ -143,8 +140,9 @@ if ($productos != null) {
                                         <div id="subtotal_<?php echo $_cod_pro; ?>" name="subtotal[]">
                                             <?php echo number_format($subtotal, 2, ',', '.') . MONEDA; ?></div>
                                     </td>
-                                    <td><a href="#" id="eliminar" class="btn btn-warning btn-sm" data-bs-cod_pro="<?php echo
-                                                                                                                    $_cod_pro; ?>" data-ds-toogle="modal" data-bs-target="eliminaModal">Eliminar</a></td>
+                                    <td><a id="eliminar" class="btn btn-warning btn-sm" data-bs-id="<?php echo
+                                    $_cod_pro; ?>" data-toggle="modal" data-target="#eliminaModal">Eliminar</a></td>
+
                                 </tr>
                             <?php } ?>
 
@@ -174,6 +172,35 @@ if ($productos != null) {
         </div>
     </main>
 
+
+
+
+
+  
+
+<!-- Modal -->
+<div class="modal fade" id="eliminaModal" tabindex="-1" role="dialog" aria-labelledby="eliminaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="eliminaModalLabel">Alerta</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ¿Desea eliminar el producto de la lista?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button id="btn-elimina"type="button" class="btn btn-danger" onclick="eliminar()">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
     <!-- Footer -->
     <footer>
         <p class="copyright text-muted">Copyright &copy; Your Website 2016</p>
@@ -193,6 +220,16 @@ if ($productos != null) {
     <script src="js/clean-blog.min.js"></script>
 
     <script>
+
+        jQuery('#eliminaModal').on('show.bs.modal', function (event) {
+            
+            let button = event.relatedTarget
+            let id = button.getAttribute('data-bs-id')
+            let buttonElimina = eliminaModal.querySelector('.modal-footer #btn-elimina')
+            buttonElimina.value = id                       
+         })
+
+
         function actualizaCantidad(cantidad, cod_pro) {
             let url = '../clases/actualizar_carrito.php'
             let formData = new FormData()
@@ -211,11 +248,50 @@ if ($productos != null) {
                         let divsubtotal = document.getElementById('subtotal_' + cod_pro)
                         divsubtotal.innerHTML = data.sub
 
-                        let elemento = document.getElementById("num_cart")
-                        elemento.innerHTML = data.numero
+                        let total = 0.00
+                        let list = document.getElementsByName('subtotal[]')
+
+                        for(let i = 0; i < list.length; i++){
+
+                            total += parseFloat(list[i].innerHTML.replace('.', '').replace(',', '.').replace('€',''))
+                        }
+
+                        document.getElementById('total').innerHTML =
+                         total.toLocaleString('es-ES', { minimumFractionDigits: 2 }).replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "€";
+                         //Este código pone los decimales con comas y los millares con puntos cada 3 números para la suma del subtotal.
                     }
                 })
         }
+
+
+
+        function eliminar() {
+        let botonElimina = document.getElementById('btn-elimina')
+        let id = botonElimina.value
+
+
+        let url = '../clases/actualizar_carrito.php'
+        let formData = new FormData()
+        formData.append('action', 'eliminar')
+        formData.append('cod_pro', id)
+
+
+        fetch(url, {
+                method: 'POST',
+                body: formData,
+                mode: 'cors'
+            }).then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                location.reload()
+                    
+                }
+            })
+        }
+
+
+
+        
     </script>
 
 </body>
