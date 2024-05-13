@@ -103,7 +103,7 @@ if (!empty($_POST)) {
       <li><a class="active" href="login.php">Login</a></li>
       <li><a href="../php/contacto.php">Contacto</a></li>
       <li><a href="../php/tienda.php">Tienda</a></li>
-      <li><a href="#">Carrito <span id="num_cart" class="badget bg-secundary"><?php echo $num_cart; ?></span></a></li>
+      <li><a href="../php/carrito.php">Carrito <span id="num_cart" class="badget bg-secundary"><?php echo $num_cart; ?></span></a></li>
       
       
       
