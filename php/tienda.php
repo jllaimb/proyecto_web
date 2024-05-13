@@ -75,7 +75,7 @@ $resultado = $sql->fetchAll(PDO::FETCH_ASSOC);
       <li><a href="../html/login.php">Login</a></li>
       <li><a href="contacto.php">Contacto</a></li>
       <li><a class="active" href="tienda.php">Tienda</a></li>
-      <li><a href="checkout.php">Carrito <span id="num_cart" class="badget bg-secundary"><?php echo $num_cart; ?></span></a></li>  
+      <li><a href="carrito.php">Carrito <span id="num_cart" class="badget bg-secundary"><?php echo $num_cart; ?></span></a></li>  
     </ul>
   </nav>
 

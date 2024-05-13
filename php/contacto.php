@@ -77,7 +77,7 @@ require '../config/config.php';
         <li><a href="../html/login.php">Login</a></li>
         <li><a class="active"href="contacto.php">Contacto</a></li>
         <li><a href="tienda.php">Tienda</a></li>
-        <li><a href="#">Carrito <span id="num_cart" class="badget bg-secundary"><?php echo $num_cart; ?></span></a></li>
+        <li><a href="carrito.php">Carrito <span id="num_cart" class="badget bg-secundary"><?php echo $num_cart; ?></span></a></li>
       
 
         
