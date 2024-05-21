@@ -99,6 +99,9 @@ p{
 
 
 
+
+
+
 @media only screen and (max-width: 767px) {
     .enlace {
         padding: 20px;
@@ -143,6 +146,8 @@ p{
     body {
         background-color: #242424;
     }
+
+    
 
     
 }

@@ -34,6 +34,8 @@ if (!empty($_POST)) {
     $contrasenya = trim($_POST['contrasenya']);
     if (!empty($correo) && !empty($contrasenya)) {
       $errors[] = login($correo, $contrasenya, $con);
+
+      
     } else {
       $errors[] = "Todos los campos son obligatorios";
     }
@@ -154,10 +156,10 @@ if (!empty($_POST)) {
                     <input type="password" name="contrasenya" id="contrasenya" tabindex="2" class="form-control" placeholder="Contraseña*">
                   </div>
 
-                  <div class="form-group text-center">
+                  <!-- <div class="form-group text-center">
                     <input type="checkbox" tabindex="3" class="" name="remember" id="remember">
                     <label for="remember"> Recordarme</label>
-                  </div>
+                  </div> -->
 
                   <div class="form-group">
                     <div class="row">

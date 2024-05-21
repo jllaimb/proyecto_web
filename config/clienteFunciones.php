@@ -1,4 +1,4 @@
-<?php
+  <?php
 
 function registrar($NIF, $nombre, $apellidos, $correo, $contrasenya, $telf, $direccion, $CP, $con)
 {
@@ -43,6 +43,7 @@ function login($correo, $contrasenya, $con)
     if ($contrasenya == $row['contrasenya']) {
 
       $_SESSION['usuario_correo'] = $row['correo'];
+
       header("Location: login.php");
       exit;
 
