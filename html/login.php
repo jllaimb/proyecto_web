@@ -6,9 +6,25 @@ require '../config/config.php';
 $db = new Database();
 $con = $db->conectar();
 
+$nombre; /*Si nombre esta vacio, es decir, si la variable esta vacía, abajo se ejecuta una página u otra, es decir, la
+          página de LOGIN o la página de MI CUENTA con el nombre del usuario. */
+
+if (isset($_SESSION['usuario_correo'])) {
+
+
+  $sql = $con->prepare("SELECT nombre FROM usuario WHERE correo = ?");
+  $sql->execute([$_SESSION['usuario_correo']]);
+  $row = $sql->fetch(PDO::FETCH_ASSOC);
+
+  //print_r($_SESSION);
+  $nombre = $row['nombre'];
+}
 
 
 $errors = [];
+
+
+
 
 if (!empty($_POST)) {
   if ($_POST['accion'] == 'registro') {
@@ -34,8 +50,6 @@ if (!empty($_POST)) {
     $contrasenya = trim($_POST['contrasenya']);
     if (!empty($correo) && !empty($contrasenya)) {
       $errors[] = login($correo, $contrasenya, $con);
-
-      
     } else {
       $errors[] = "Todos los campos son obligatorios";
     }
@@ -62,7 +76,7 @@ if (!empty($_POST)) {
 
   <!-- Bootstrap Core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
 
   <!-- Theme CSS -->
   <link href="../css/clean-blog.min.css" rel="stylesheet" />
@@ -91,7 +105,7 @@ if (!empty($_POST)) {
   <link rel="stylesheet" href="../css/login.css">
   <link rel="stylesheet" href="../css/estilo_letra_menu.css">
   <script src="../js/login.js"></script>
-  <!-- Navigation --> 
+  <!-- Navigation -->
   <nav>
     <input type="checkbox" id="check" />
     <label for="check" class="checkbtn">
@@ -102,12 +116,21 @@ if (!empty($_POST)) {
     </a>
     <ul>
       <li><a href="../index.php">Inicio</a></li>
-      <li><a class="active" href="login.php">Login</a></li>
+    
+
+      <!-- Si no se recibe el nombre del usuario de la base de datos, te redirige aparece la página de login -->
+        <?php if(!isset($nombre)){?>
+          <li><a class="active"   href="login.php">Login</a></li>
+        <?php } else{?>
+          <!-- Si se recibe el nombre te redirige a la pagina de mi cuenta con el nombre de usuario en la página-->
+          <li><a href="../php/miCuenta.php"><i class="fas fa-user"></i> <?php echo $nombre?></a></li>
+          <?php }?>
+
+
+
       <li><a href="../php/contacto.php">Contacto</a></li>
       <li><a href="../php/tienda.php">Tienda</a></li>
-      <li><a href="../php/carrito.php">Carrito <span id="num_cart" class="badget bg-secundary"><?php echo $num_cart; ?></span></a></li>
-      
-      
+      <li><a href="../php/carrito.php"><i class="fa-solid fa-cart-shopping"></i> Carrito <span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a></li>
       
       
     </ul>

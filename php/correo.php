@@ -15,16 +15,16 @@ try {
     //Server settings
     $mail->SMTPDebug = 2;                      //Enable verbose debug output
     $mail->isSMTP();                                            //Send using SMTP
-    $mail->Host       = 'smtp.ionos.es';                     //Set the SMTP server to send through
+    $mail->Host       = 'smtp-mail.outlook.com';                     //Set the SMTP server to send through
     $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-    $mail->Username   = 'web@worldofcataclysm.eu';                     //SMTP username
-    $mail->Password   = '6%x44_OhuN?!!';                               //SMTP password
+    $mail->Username   = 'tuplegable@outlook.com';                     //SMTP username
+    $mail->Password   = 'p0o9i8u7y6t5';                               //SMTP password
     $mail->SMTPSecure = 'tls';            //Enable implicit TLS encryption
     $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
     //Recipients
-    $mail->setFrom('web@worldofcataclysm.eu', 'TuPlegable.com');
-    $mail->addAddress('web@worldofcataclysm.eu');     //Add a recipient
+    $mail->setFrom('tuplegable@outlook.com', 'TuPlegable.com');
+    $mail->addAddress('tuplegable@outlook.com');     //Add a recipient
 
  
 

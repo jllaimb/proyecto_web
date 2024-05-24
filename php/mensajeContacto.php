@@ -61,11 +61,11 @@
       <label for="check" class="checkbtn">
         <i class="fas fa-bars"></i>
       </label>
-      <a class="enlace" href="../index.html">
+      <a class="enlace" href="../index.php">
         <img src="../img/logo.png" alt="" class="logo" width="200px" />
       </a>
       <ul>
-        <li><a href="../index.html">Inicio</a></li>
+        <li><a href="../index.php">Inicio</a></li>
         <li><a href="../html/login.html">Login</a></li>
         <li><a class="active"href="contacto.html">Contacto</a></li>
         <li><a href="#">Tienda</a></li>
@@ -102,7 +102,7 @@
               </div>
               <hr>
             </div>
-            <h4>Mensaje enviado correctamente.<h4>
+            <h4 class="mensaje_h4">Mensaje enviado correctamente.<h4>
             <div class="panel-body">
               <div class="row">
                 <div class="col-lg-12">

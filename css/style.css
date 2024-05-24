@@ -1,9 +1,9 @@
 * {
-    padding: 0;
-    margin: 0;
-    text-decoration: none;
-    list-style: none;
-    box-sizing: border-box;
+    /* padding: 0; */
+    /* margin: 0; */
+    /* text-decoration: none; */
+    /* list-style: none; */
+    /* box-sizing: border-box; */
 }
 
 nav {
@@ -95,6 +95,20 @@ p{
 
 
 
+.dropdown-menu a {
+    color: black !important; /* Texto negro */
+    padding: 10px 15px; /* Ajuste de relleno */
+    width: auto !important; /* Ancho automático */
+   
+}
+
+.dropdown-menu{
+  min-width: 13rem !important;
+}
+
+.dropdown-menu a:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* Color de fondo al pasar el cursor */
+}
 
 
 

@@ -44,7 +44,7 @@ function login($correo, $contrasenya, $con)
 
       $_SESSION['usuario_correo'] = $row['correo'];
 
-      header("Location: login.php");
+      header("Location: ../php/miCuenta.php");
       exit;
 
     } else {

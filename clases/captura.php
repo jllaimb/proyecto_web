@@ -23,21 +23,26 @@ if(is_array($datos)){
     //$id_cliente = $datos['detalles']['payer']['payer_id']; //ID DE USUARIO DE PAYPAL;
 
     //(HAY QUE HACERLO CON LAS SESSIONES PORQUE EL USUARIO DEBE DE ESTAR REGISTRADO PARA HACER LA COMPRA.)
+    //( ERROR INTERNO QUE HAY QUE SOLUCIONAR )
+
+
     $sql = $con->prepare("SELECT NIF FROM usuario WHERE correo = ?");
     $sql->execute([$_SESSION['usuario_correo']]);
-    $row = $sql->fetch(PDO::FETCH_ASSOC);
-    $NIF = $row['NIF'];
+    $row = $sql->fetch(PDO::FETCH_ASSOC);   //AQUI TE DEVUELVE UNA FILA CON TODAS LAS COLUMNAS DE LA TABLA USUARIO DEPENDIENDO DE
+    $NIF = $row['NIF'];                     //SI EL USUARIO               
 
 
     $total = $datos['detalles']['purchase_units'][0]['amount']['value']; //total_ped
    
 
+
+
     $sql = $con->prepare("INSERT INTO pedido (id_transaccion, fecha_ped, status, NIF, total_ped) VALUES (?,?,?,?,?)");
     $sql->execute([$id_transaccion, $fecha_nueva, $status, $NIF, $total]);
-    $num_pedido = $con->lastInsertId('num_pedido');
+    $num_pedido = $con->lastInsertId('num_pedido'); //AQUÍ OBTEBNEMOS EL NÚMERO DE PEDIDO DE LA BASE DE DATOS
+   
 
-
-
+    // ESTO ES PARA INSERTAR LOS DATOS EN LA TABLA DE PRODUCTO_PEDIDO DEPENDIENDO DE SI SE HA REALIZADO UN PEDIDO O NO
     if($num_pedido > 0) {
         $productos = isset($_SESSION['carrito']['productos']) ? $_SESSION['carrito']['productos'] : null;
 
@@ -51,6 +56,9 @@ if(is_array($datos)){
     }
 
 }
+
+
+
 
 
 ?>

@@ -10,7 +10,18 @@ $sql->execute();
 $resultado = $sql->fetchAll(PDO::FETCH_ASSOC);
 
 
+$nombre;
 
+if (isset($_SESSION['usuario_correo'])) {
+
+
+  $sql = $con->prepare("SELECT nombre FROM usuario WHERE correo = ?");
+  $sql->execute([$_SESSION['usuario_correo']]);
+  $row = $sql->fetch(PDO::FETCH_ASSOC);
+
+  //print_r($_SESSION);
+  $nombre = $row['nombre'];
+}
 
 ?>
 
@@ -33,6 +44,7 @@ $resultado = $sql->fetchAll(PDO::FETCH_ASSOC);
   <!-- Bootstrap Core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
 
   <!-- Theme CSS -->
   <link href="../css/clean-blog.min.css" rel="stylesheet" />
@@ -73,14 +85,31 @@ $resultado = $sql->fetchAll(PDO::FETCH_ASSOC);
       <img src="../img/logo.png" alt="" class="logo" width="200px" />
     </a>
     <ul>
-      <li><a href="../index.php">Inicio</a></li>
-      <li><a href="../html/login.php">Login</a></li>
-      <li><a href="contacto.php">Contacto</a></li>
-      <li><a class="active" href="tienda.php">Tienda</a></li>
-      <li><a href="carrito.php">Carrito <span id="num_cart" class="badget bg-secundary"><?php echo $num_cart; ?></span></a></li>  
-    </ul>
-  </nav>
+        <li><a href="../index.php">Inicio</a></li>
 
+        <?php if(!isset($nombre)){?>
+          <!-- Si no se recibe el nombre del usuario de la base de datos, te redirige aparece la página de login -->
+          <li><a  href="../html/login.php">Login</a></li>
+        <?php } else{?>
+          <!-- Si vuelves a la página de inicio despúes de haber iniciado sesión, y vuelves a darle a tu nombre de ususario te redirige
+                a un menu desplegable.-->
+          <li class="dropdown">
+          
+          <a class="dropdown-toggle tienda" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-user"></i> <?php echo $nombre ?> <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a cla href="php/miCuenta.php">Mi Cuenta</a></li>
+            <li><a href="php/logout.php">Cerrar sesión</a></li>
+          </ul>
+        </li>
+          <?php }?>
+        <li><a href="contacto.php">Contacto</a></li>
+        <li><a class="active" href="tienda.php">Tienda</a></li>
+        <li><a href="carrito.php"><i class="fa-solid fa-cart-shopping"></i> Carrito <span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a></li>
+        
+      </ul>
+  </nav>
   <!-- Page Header -->
   <!-- Set your background image for this header on the line below. -->
   <header class="intro-header" style="background-image: url('../img/home-bg.jpg')">

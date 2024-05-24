@@ -1,9 +1,40 @@
 <?php
 require '../config/config.php';
+require '../config/clienteFunciones.php';
 require '../config/database.php';
 
 $db = new Database();
 $con = $db->conectar();
+
+
+$nombre; /*Si nombre esta vacio, es decir, si la variable esta vacía, abajo se ejecuta una página u otra, es decir, la
+          página de LOGIN o la página de MI CUENTA con el nombre del usuario. */
+
+if (isset($_SESSION['usuario_correo'])) {
+
+
+  $sql = $con->prepare("SELECT nombre FROM usuario WHERE correo = ?");
+  $sql->execute([$_SESSION['usuario_correo']]);
+  $row = $sql->fetch(PDO::FETCH_ASSOC);
+
+  //print_r($_SESSION);
+  $nombre = $row['nombre'];
+}
+
+
+$sql = $con->prepare("SELECT cod_pro, nombre, precio_venta FROM producto WHERE activo = 1");
+$sql->execute();
+$resultado = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+
+
+
+
+
+
+
+
+
 
 $productos = isset($_SESSION['carrito']['productos']) ? $_SESSION['carrito']['productos'] : null;
 
@@ -38,7 +69,8 @@ if ($productos != null) {
 
 
     <!-- Bootstrap Core CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
 
     <!-- Theme CSS -->
     <link href="../css/clean-blog.min.css" rel="stylesheet" />
@@ -68,22 +100,39 @@ if ($productos != null) {
 
     <!-- Navigation -->
     <nav>
-        <input type="checkbox" id="check" />
-        <label for="check" class="checkbtn">
-            <i class="fas fa-bars"></i>
-        </label>
-        <a class="enlace" href="../index.php">
-            <img src="../img/logo.png" alt="" class="logo" width="200px" />
-        </a>
-        <ul>
-            <li><a href="../index.php">Inicio</a></li>
-            <li><a href="../html/login.php">Login</a></li>
-            <li><a href="contacto.php">Contacto</a></li>
-            <li><a href="tienda.php">Tienda</a></li>
-            <li><a class="active" href="carrito.php">Carrito <span id="num_cart" class="badget bg-secundary"><?php echo $num_cart; ?></span></a></li></a></li>
-            
-        </ul>
-    </nav>
+    <input type="checkbox" id="check" />
+    <label for="check" class="checkbtn">
+      <i class="fas fa-bars"></i>
+    </label>
+    <a class="enlace" href="../index.php">
+      <img src="../img/logo.png" alt="" class="logo" width="200px" />
+    </a>
+    <ul>
+        <li><a href="../index.php">Inicio</a></li>
+
+        <?php if(!isset($nombre)){?>
+          <!-- Si no se recibe el nombre del usuario de la base de datos, te redirige aparece la página de login -->
+          <li><a  href="../html/login.php">Login</a></li>
+        <?php } else{?>
+          <!-- Si vuelves a la página de inicio despúes de haber iniciado sesión, y vuelves a darle a tu nombre de ususario te redirige
+                a un menu desplegable.-->
+          <li class="dropdown">
+          
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-user"></i> <?php echo $nombre ?> <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a cla href="php/miCuenta.php">Mi Cuenta</a></li>
+            <li><a href="php/logout.php">Cerrar sesión</a></li>
+          </ul>
+        </li>
+          <?php }?>
+        <li><a href="contacto.php">Contacto</a></li>
+        <li><a href="tienda.php">Tienda</a></li>
+        <li><a class="active"  href="carrito.php"><i class="fa-solid fa-cart-shopping"></i> Carrito <span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a></li>
+        
+      </ul>
+  </nav>
 
     <!-- Page Header -->
     <!-- Set your background image for this header on the line below. -->
