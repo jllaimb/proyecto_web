@@ -160,8 +160,12 @@ p{
     body {
         background-color: #242424;
     }
-
     
-
     
+}
+
+.miCuenta{
+    color: white;
+    font-weight: bold;
+    text-align: center;
 }

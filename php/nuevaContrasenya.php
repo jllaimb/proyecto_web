@@ -2,6 +2,7 @@
 
 require '../config/database.php';
 require '../config/clienteFunciones.php';
+require '../config/config.php';
 
 $db = new Database();
 $con = $db->conectar();
@@ -11,17 +12,14 @@ $con = $db->conectar();
 <head>
     <meta charset="UTF-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nueva Contraseña</title>
 
 
     <title>Clean Blog</title>
 
 <!-- Bootstrap Core CSS -->
 <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-<link
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
-  rel="stylesheet"
-/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
 
 <!-- Theme CSS -->
 <link href="../css/clean-blog.min.css" rel="stylesheet" />
@@ -63,7 +61,8 @@ $con = $db->conectar();
 
     <!------ Include the above in your HEAD tag ---------->
     <link rel="stylesheet" href="../css/login.css">
-     <script src="../js/login.js"></script>  
+     <script src="../js/login.js"></script>
+     <link rel="stylesheet" href="../css/estilo_letra_menu.css">  
     <!-- Navigation -->
     <nav>
       <input type="checkbox" id="check" />
@@ -73,6 +72,14 @@ $con = $db->conectar();
       <a class="enlace" href="../index.html">
         <img src="../img/logo.png" alt="" class="logo" width="200px" />
       </a>
+
+      <ul>
+        <li><a href="../index.php">Inicio</a></li>
+        <li><a class="active"href="../html/login.php">Login</a></li>
+        <li><a href="contacto.php">Contacto</a></li>
+        <li><a href="tienda.php">Tienda</a></li>
+        <li><a href="carrito.php"><i class="fa-solid fa-cart-shopping"></i> Carrito <span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a></li>
+      </ul>
     </nav>
 
 
@@ -148,10 +155,10 @@ if (isset($_POST["nuevaContrasenya"]) && isset($_POST["repetirContrasenya"])) {
         cambiarContrasenya($nuevaContrasenya, $email, $con);
         
         // También puedes mostrar un mensaje de éxito después de cambiar la contraseña
-        echo "<h2>Contraseña cambiada con éxito</h2>";
+        echo "<h4>Contraseña cambiada con éxito.</h4>";
     } else {
         // Las contraseñas no coinciden, muestra un mensaje de error
-        echo "<h2>Error: Las contraseñas no coinciden</h2>";
+        echo "<h4>Error: Las contraseñas no coinciden.</h4>";
     }
 }
 

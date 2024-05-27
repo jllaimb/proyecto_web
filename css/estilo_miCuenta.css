@@ -1,0 +1,33 @@
+.mi-cuenta-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .mi-cuenta-form .form-group {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: row; /* Cambiado a fila para que los elementos estén uno al lado del otro */
+    align-items: center; /* Alineación vertical */
+    margin: 10px 0;
+  }
+  
+  .mi-cuenta-form .form-group label {
+    flex: 1; /* Hace que el label ocupe el 50% del ancho */
+    margin-right: 10px; /* Espacio entre el label y el input */
+  }
+  
+  .mi-cuenta-form .form-group input {
+    flex: 2; /* Hace que el input ocupe el 50% restante del ancho */
+    
+  }
+  
+  
+  .btn-primary {
+    margin-top: 20px;
+  }
+
+  label {
+    color: white;
+  }

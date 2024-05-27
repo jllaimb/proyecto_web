@@ -2,6 +2,7 @@
 require '../config/config.php';
 require '../config/database.php';
 
+
 $db = new Database();
 $con = $db->conectar();
 
@@ -125,7 +126,7 @@ if ($cod_pro == '' || $token == '') {
       <li><a href="../html/login.php">Login</a></li>
       <li><a href="contacto.php">Contacto</a></li>
       <li><a class="active" href="tienda.php">Tienda</a></li>
-      <li><a href="checkout.php">Carrito <span id="num_cart" class="badget bg-secundary"><?php echo $num_cart; ?></span></a></li>
+      <li><a href="carrito.php"><i class="fa-solid fa-cart-shopping"></i> Carrito <span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a></li>
     </ul>
   </nav>
 
@@ -214,13 +215,12 @@ if ($cod_pro == '' || $token == '') {
             <?php echo $descripcion; ?>
           </p>
 
+
           <div class="d-grid gap-3 col-10 mx-auto">
             <button style="color: white; background-color: orangered;" class="btn btn-primary" type="button">Comprar ahora</button>
             <button style="color: white;" class="btn btn-outline-primary" type="button" onclick="addProducto(<?php echo
             $cod_pro; ?>, '<?php echo $token_tmp ?>')">Agregar al carrito</button>
-
-
-            
+          
           </div>
 
         </div>
@@ -238,6 +238,7 @@ if ($cod_pro == '' || $token == '') {
 
   <!-- Bootstrap Core JavaScript -->
   <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
 
   <!-- Contact Form JavaScript -->
   <script src="js/jqBootstrapValidation.js"></script>

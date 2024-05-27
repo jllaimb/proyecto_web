@@ -2,7 +2,7 @@
 require '../config/config.php';
 require '../config/clienteFunciones.php';
 require '../config/database.php';
-
+require 'correo.php';
 
 $db = new Database();
 $con = $db->conectar();
@@ -19,6 +19,11 @@ if (isset($_SESSION['usuario_correo'])) {
 
   //print_r($_SESSION);
   $nombre = $row['nombre'];
+}
+
+if(isset($_POST['asunto'])){
+  enviar("Mensaje Web","Asunto: ". $_POST['asunto']."<br>Este es el correo de " . $_POST['email'] ."<br>" . $_POST['mensaje'],"tuplegable@outlook.com");
+  header("LOCATION: mensajeContacto.php");
 }
 ?>
 
@@ -135,7 +140,7 @@ if (isset($_SESSION['usuario_correo'])) {
           <div class="panel-body">
             <div class="row">
               <div class="col-lg-12">
-                <form id="login-form" action="correo.php" method="post" role="form" style="display: block;">
+                <form id="login-form" action="contacto.php" method="post" role="form" style="display: block;">
                   <div class="form-group">
                     <input type="text" name="nombre" id="nombre " tabindex="1" class="form-control" placeholder="Nombre" value="" required>
                   </div>

@@ -9,7 +9,7 @@ class Database {
     private $password = "";
     private $charset = "utf8";
 
-    function conectar()
+    function conectar():PDO
     {
         try{
         $conexion = "mysql:host=" . $this->hostname . "; dbname=" . $this->database . "; charset". $this->charset;
