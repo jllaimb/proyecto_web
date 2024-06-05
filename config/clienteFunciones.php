@@ -27,9 +27,12 @@ function registrar($NIF, $nombre, $apellidos, $correo, $contrasenya, $telf, $dir
 function cambiarContrasenya($nuevaContrasenya, $email, $con)
 {
 
-  $sql = $con->prepare('UPDATE usuario SET contrasenya = ? WHERE correo = ?');
+  $sql = $con->prepare('UPDATE usuario SET contrasenya = ?, token = ? WHERE correo = ?');
   $sql->bindParam(1, $nuevaContrasenya);
-  $sql->bindParam(2, $email);
+  $vacio = null;
+  $sql->bindParam(2, $vacio);
+  $sql->bindParam(3, $email);
+
   $sql->execute();
 }
 

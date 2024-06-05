@@ -184,7 +184,7 @@ if (!empty($_POST)) {
                     <div class="row">
                       <div class="col-lg-12">
                         <div class="text-center">
-                          <a href="cambiarContrasenya.html" tabindex="5" class="forgot-password">¿Has olvidado tu contraseña?</a>
+                          <a href="cambiarContrasenya.php" tabindex="5" class="forgot-password">¿Has olvidado tu contraseña?</a>
                         </div>
                         <input type="hidden" name="accion" value="login">
                       </div>

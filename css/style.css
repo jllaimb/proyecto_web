@@ -197,3 +197,11 @@ h4 {
 .det {
     color: white;
 }
+
+.no_registrado {
+    color: red;
+}
+
+.cambio {
+    color: black;
+}
