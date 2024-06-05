@@ -116,18 +116,7 @@ if (!empty($_POST)) {
     </a>
     <ul>
       <li><a href="../index.php">Inicio</a></li>
-    
-
-      <!-- Si no se recibe el nombre del usuario de la base de datos, te redirige aparece la página de login -->
-        <?php if(!isset($nombre)){?>
-          <li><a class="active"   href="login.php">Login</a></li>
-        <?php } else{?>
-          <!-- Si se recibe el nombre te redirige a la pagina de mi cuenta con el nombre de usuario en la página-->
-          <li><a href="../php/miCuenta.php"><i class="fas fa-user"></i> <?php echo $nombre?></a></li>
-          <?php }?>
-
-
-
+      <li><a class="active"   href="login.php">Login</a></li>
       <li><a href="../php/contacto.php">Contacto</a></li>
       <li><a href="../php/tienda.php">Tienda</a></li>
       <li><a href="../php/carrito.php"><i class="fa-solid fa-cart-shopping"></i> Carrito <span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a></li>

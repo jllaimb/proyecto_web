@@ -5,6 +5,21 @@ require '../config/database.php';
 $db = new Database();
 $con = $db->conectar();
 
+$nombre; /*Si nombre esta vacio, es decir, si la variable esta vacía, abajo se ejecuta una página u otra, es decir, la
+          página de LOGIN o la página de MI CUENTA con el nombre del usuario. */
+
+if (isset($_SESSION['usuario_correo'])) {
+
+
+  $sql = $con->prepare("SELECT nombre FROM usuario WHERE correo = ?");
+  $sql->execute([$_SESSION['usuario_correo']]);
+  $row = $sql->fetch(PDO::FETCH_ASSOC);
+
+  //print_r($_SESSION);
+  $nombre = $row['nombre'];
+}
+
+
 $productos = isset($_SESSION['carrito']['productos']) ? $_SESSION['carrito']['productos'] : null;
 
 $lista_carrito = array();
@@ -33,7 +48,7 @@ if ($productos != null) {
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Clean Blog</title>
-    <link rel='stylesheet' type='text/css' media='screen' href='../css/estiloCarrito.css'> 
+    <link rel='stylesheet' type='text/css' media='screen' href='../css/estiloCarrito.css'>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -79,13 +94,31 @@ if ($productos != null) {
             <img src="../img/logo.png" alt="" class="logo" width="200px" />
         </a>
         <ul>
-            <li><a href="../index.php">Inicio</a></li>
-            <li><a href="../html/login.php">Login</a></li>
-            <li><a href="contacto.php">Contacto</a></li>
-            <li><a href="tienda.php">Tienda</a></li>
-            <li><a class="active" href="carrito.php">Carrito <span id="num_cart" class="badget bg-secundary"><?php echo $num_cart; ?></span></a></li></a></li>
+        <li><a href="../index.php">Inicio</a></li>
 
-        </ul>
+        <?php if(!isset($nombre)){?>
+          <!-- Si no se recibe el nombre del usuario de la base de datos, te redirige aparece la página de login -->
+          <li><a  href="../html/login.php">Login</a></li>
+        <?php } else{?>
+          <!-- Si vuelves a la página de inicio despúes de haber iniciado sesión, y vuelves a darle a tu nombre de ususario te redirige
+                a un menu desplegable.-->
+          <li class="dropdown">
+          
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-user"></i> <?php echo $nombre ?> <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a cla href="miCuenta.php">Mi Cuenta</a></li>
+            <li><a href="misCompras.php">Mis compras</a></li>
+            <li><a href="logout.php">Cerrar sesión</a></li>
+          </ul>
+        </li>
+          <?php }?>
+        <li><a href="contacto.php">Contacto</a></li>
+        <li><a href="tienda.php">Tienda</a></li>
+        <li><a class="active"  href="carrito.php"><i class="fa-solid fa-cart-shopping"></i> Carrito <span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a></li>
+        
+      </ul>
     </nav>
 
     <!-- Page Header -->
@@ -180,10 +213,10 @@ if ($productos != null) {
         },
         createOrder: function(data, actions){
            console.log(<?php echo $total;?>)
-            return actions.order.create({  
+            return actions.order.create({
                 purchase_units: [{
                     amount: {
-                        
+
                         value: <?php echo round($total, 2);?>
                     }
                 }]
@@ -193,8 +226,8 @@ if ($productos != null) {
         onApprove: function(data, actions){
             let url = '../clases/captura.php'
             actions.order.capture().then(function(detalles){
-               
-               //window.location.href='../html/completado.html'
+
+
                console.log(detalles);
 
                return fetch(url, {
@@ -205,6 +238,9 @@ if ($productos != null) {
                 body: JSON.stringify({
                     detalles: detalles
                 })
+               }).then(function(response){
+                     window.location.href = "completado.php?key=" + detalles['id'];
+                     
                })
             });
         },
@@ -240,7 +276,7 @@ if ($productos != null) {
 
 
 
-    
+
 
 </body>
 

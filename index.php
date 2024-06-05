@@ -88,7 +88,8 @@ $nombre = $row['nombre'];
             <i class="fas fa-user"></i> <?php echo $nombre ?> <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a cla href="php/miCuenta.php">Mi Cuenta</a></li>
+            <li><a  href="php/miCuenta.php">Mi Cuenta</a></li>
+            <li><a href="php/misCompras.php">Mis compras</a></li>
             <li><a href="php/logout.php">Cerrar sesión</a></li>
           </ul>
         </li>

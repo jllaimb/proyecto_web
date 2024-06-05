@@ -2,9 +2,30 @@
 require '../config/config.php';
 require '../config/database.php';
 
-
 $db = new Database();
 $con = $db->conectar();
+
+
+$sql = $con->prepare("SELECT cod_pro, nombre, precio_venta FROM producto WHERE activo = 1");
+$sql->execute();
+$resultado = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+
+$nombre;
+
+if (isset($_SESSION['usuario_correo'])) {
+
+
+  $sql = $con->prepare("SELECT nombre FROM usuario WHERE correo = ?");
+  $sql->execute([$_SESSION['usuario_correo']]);
+  $row = $sql->fetch(PDO::FETCH_ASSOC);
+
+  //print_r($_SESSION);
+  $nombre = $row['nombre'];
+}
+
+
+
 
 $cod_pro = isset($_GET['cod_pro']) ? $_GET['cod_pro'] : '';
 $token = isset($_GET['token']) ? $_GET['token'] : '';
@@ -17,8 +38,7 @@ if ($cod_pro == '' || $token == '') {
 
   if ($token == $token_tmp) {
 
-    $sql = $con->prepare("SELECT count(cod_pro) FROM producto WHERE cod_pro=? AND activo=1
-        LIMIT 1");
+    $sql = $con->prepare("SELECT count(cod_pro) FROM producto WHERE cod_pro=? AND activo=1 LIMIT 1");
     $sql->execute([$cod_pro]);
     if ($sql->fetchColumn() > 0) {
 
@@ -27,7 +47,7 @@ if ($cod_pro == '' || $token == '') {
       $row = $sql->fetch(PDO::FETCH_ASSOC);
 
 
-      $nombre = $row['nombre'];
+      $nombre_producto = $row['nombre'];
       $descripcion = $row['descripcion'];
       $precio_venta = $row['precio_venta'];
       $descuento = $row['descuento'];
@@ -122,12 +142,32 @@ if ($cod_pro == '' || $token == '') {
       <img src="../img/logo.png" alt="" class="logo" width="200px" />
     </a>
     <ul>
-      <li><a href="../index.php">Inicio</a></li>
-      <li><a href="../html/login.php">Login</a></li>
-      <li><a href="contacto.php">Contacto</a></li>
-      <li><a class="active" href="tienda.php">Tienda</a></li>
-      <li><a href="carrito.php"><i class="fa-solid fa-cart-shopping"></i> Carrito <span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a></li>
-    </ul>
+        <li><a href="../index.php">Inicio</a></li>
+
+        <?php if(!isset($nombre)){?>
+          <!-- Si no se recibe el nombre del usuario de la base de datos, te redirige aparece la página de login -->
+          <li><a  href="../html/login.php">Login</a></li>
+        <?php } else{?>
+          <!-- Si vuelves a la página de inicio despúes de haber iniciado sesión, y vuelves a darle a tu nombre de ususario te redirige
+                a un menu desplegable.-->
+          <li class="dropdown">
+          
+          <a class="dropdown-toggle tienda" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-user"></i> <?php echo $nombre ?> <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="miCuenta.php">Mi Cuenta</a></li>
+            <li><a href="misCompras.php">Mis compras</a></li>
+            <li><a href="logout.php">Cerrar sesión</a></li>
+            
+          </ul>
+        </li>
+          <?php }?>
+        <li><a href="contacto.php">Contacto</a></li>
+        <li><a class="active" href="tienda.php">Tienda</a></li>
+        <li><a href="carrito.php"><i class="fa-solid fa-cart-shopping"></i> Carrito <span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a></li>
+        
+      </ul>
   </nav>
 
   <!-- Page Header -->
@@ -161,8 +201,8 @@ if ($cod_pro == '' || $token == '') {
 
               if (!empty($imagenes)) {
                 foreach ($imagenes as $key => $img) {
-                  $nombreArchivo = basename($img); // Obtiene el nombre del archivo de la ruta completa
-                  if ($nombreArchivo != "imagen.png") {
+                  $nombre_productoArchivo = basename($img); // Obtiene el nombre del archivo de la ruta completa
+                  if ($nombre_productoArchivo != "imagen.png") {
                     echo "<div class='carousel-item'>
             <img src='$img' class='d-block w-100'>
           </div>";
@@ -186,15 +226,15 @@ if ($cod_pro == '' || $token == '') {
 
 
         <div class="col-md-6 order-md-2">
-          <h2 style="color: white;"><?php echo $nombre; ?></h2>
+          <h2 style="color: white;"><?php echo $nombre_producto; ?></h2>
 
           <!-- PARA APLICAR EL DESCUENTO -->
           <?php if ($descuento > 0) { ?>
 
-            
+
             <p style="color: white;  text-decoration: line-through red;
             "><del><?php echo number_format($precio_venta, 2, ',', '.') . MONEDA; ?></del></p>
-           
+
             <h2 style="color: white;">
 
               <?php echo number_format($precio_desc, 2, ',', '.') . MONEDA; ?>
@@ -207,7 +247,7 @@ if ($cod_pro == '' || $token == '') {
 
           <?php } ?>
 
-            
+
 
 
 
@@ -219,8 +259,8 @@ if ($cod_pro == '' || $token == '') {
           <div class="d-grid gap-3 col-10 mx-auto">
             <button style="color: white; background-color: orangered;" class="btn btn-primary" type="button">Comprar ahora</button>
             <button style="color: white;" class="btn btn-outline-primary" type="button" onclick="addProducto(<?php echo
-            $cod_pro; ?>, '<?php echo $token_tmp ?>')">Agregar al carrito</button>
-          
+                                                                                                              $cod_pro; ?>, '<?php echo $token_tmp ?>')">Agregar al carrito</button>
+
           </div>
 
         </div>

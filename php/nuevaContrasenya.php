@@ -7,6 +7,26 @@ require '../config/config.php';
 $db = new Database();
 $con = $db->conectar();
 
+
+$nombre; /*Si nombre esta vacio, es decir, si la variable esta vacía, abajo se ejecuta una página u otra, es decir, la
+          página de LOGIN o la página de MI CUENTA con el nombre del usuario. */
+
+if (isset($_SESSION['usuario_correo'])) {
+
+
+  $sql = $con->prepare("SELECT nombre FROM usuario WHERE correo = ?");
+  $sql->execute([$_SESSION['usuario_correo']]);
+  $row = $sql->fetch(PDO::FETCH_ASSOC);
+
+  //print_r($_SESSION);
+  $nombre = $row['nombre'];
+}
+
+if(isset($_POST['asunto'])){
+  enviarEmail("Mensaje Web","Asunto: ". $_POST['asunto']."<br>Este es el correo de " . $_POST['email'] ."<br>" . $_POST['mensaje'],"tuplegable@outlook.com");
+  header("LOCATION: mensajeContacto.php");
+}
+
 ?>
 
 <head>
@@ -65,20 +85,38 @@ $con = $db->conectar();
      <link rel="stylesheet" href="../css/estilo_letra_menu.css">  
     <!-- Navigation -->
     <nav>
-      <input type="checkbox" id="check" />
-      <label for="check" class="checkbtn">
-        <i class="fas fa-bars"></i>
-      </label>
-      <a class="enlace" href="../index.html">
-        <img src="../img/logo.png" alt="" class="logo" width="200px" />
-      </a>
-
-      <ul>
+    <input type="checkbox" id="check" />
+    <label for="check" class="checkbtn">
+      <i class="fas fa-bars"></i>
+    </label>
+    <a class="enlace" href="../index.php">
+      <img src="../img/logo.png" alt="" class="logo" width="200px" />
+    </a>
+    <ul>
         <li><a href="../index.php">Inicio</a></li>
-        <li><a class="active"href="../html/login.php">Login</a></li>
-        <li><a href="contacto.php">Contacto</a></li>
+
+        <?php if(!isset($nombre)){?>
+          <!-- Si no se recibe el nombre del usuario de la base de datos, te redirige aparece la página de login -->
+          <li><a  href="../html/login.php">Login</a></li>
+        <?php } else{?>
+          <!-- Si vuelves a la página de inicio despúes de haber iniciado sesión, y vuelves a darle a tu nombre de ususario te redirige
+                a un menu desplegable.-->
+          <li class="dropdown">
+          
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-user"></i> <?php echo $nombre ?> <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a cla href="miCuenta.php">Mi Cuenta</a></li>
+            <li><a href="misCompras.php">Mis compras</a></li>
+            <li><a href="logout.php">Cerrar sesión</a></li>
+          </ul>
+        </li>
+          <?php }?>
+        <li><a  class="active" href="contacto.php">Contacto</a></li>
         <li><a href="tienda.php">Tienda</a></li>
         <li><a href="carrito.php"><i class="fa-solid fa-cart-shopping"></i> Carrito <span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a></li>
+        
       </ul>
     </nav>
 

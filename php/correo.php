@@ -9,12 +9,12 @@ use PHPMailer\PHPMailer\Exception;
 require '../vendor/autoload.php';
 
 //Create an instance; passing `true` enables exceptions
-function enviar($asunto,$mensaje,$correo,){
+function enviarEmail($asunto,$mensaje,$correo,){
 
     try {
         $mail = new PHPMailer(true);
         //Server settings
-        $mail->SMTPDebug = 0;                      //Enable verbose debug output
+        $mail->SMTPDebug = 2;                      //Enable verbose debug output
         $mail->isSMTP();                                            //Send using SMTP
         $mail->Host       = 'smtp-mail.outlook.com';                     //Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
@@ -27,10 +27,19 @@ function enviar($asunto,$mensaje,$correo,){
         $mail->setFrom('tuplegable@outlook.com', 'TuPlegable');   // (Lo envía mi correo con la información del cliente.) 
         $mail->addAddress($correo);     //Add a recipient  (Correo del cliente)
     
+
+        //Content
         $mail->isHTML(true);                                  //Set email format to HTML  
         $mail->Subject = $asunto;
+
         $mail->Body    = $mensaje;
+        $mail->AltBody = 'Le enviamos los detalles de su compra.';
         $mail->CharSet = 'UTF-8';
+
+
+        $mail->setLanguage('es', '../vendor/phpmailer\phpmailer/language/phpmailer.lang-es.php'); //En caso de que se genere algún error, se muestra en
+
+
         $mail->send();
       
 

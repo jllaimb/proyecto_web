@@ -1,5 +1,10 @@
   <?php
 
+  function generarToken(){
+    return md5(uniqid(mt_rand(), false));
+
+  }
+
 function registrar($NIF, $nombre, $apellidos, $correo, $contrasenya, $telf, $direccion, $CP, $con)
 {
   $contrasenya = hash("sha512", $contrasenya);

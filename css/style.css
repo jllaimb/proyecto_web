@@ -167,5 +167,33 @@ p{
 .miCuenta{
     color: white;
     font-weight: bold;
+    text-align: c
+    enter;
+}
+
+h3 {
     text-align: center;
+    color: white !important;
+}
+
+table {
+    color: white;
+}
+
+.col {
+    color: white;
+}
+
+
+h4 {
+    color: white;
+}
+
+.mis_compras {
+    color: white;
+}
+
+
+.det {
+    color: white;
 }

@@ -33,9 +33,6 @@ $resultado = $sql->fetchAll(PDO::FETCH_ASSOC);
 
 
 
-
-
-
 $productos = isset($_SESSION['carrito']['productos']) ? $_SESSION['carrito']['productos'] : null;
 
 $lista_carrito = array();
@@ -70,7 +67,7 @@ if ($productos != null) {
 
     <!-- Bootstrap Core CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+  
 
     <!-- Theme CSS -->
     <link href="../css/clean-blog.min.css" rel="stylesheet" />
@@ -123,7 +120,8 @@ if ($productos != null) {
           </a>
           <ul class="dropdown-menu">
             <li><a cla href="php/miCuenta.php">Mi Cuenta</a></li>
-            <li><a href="php/logout.php">Cerrar sesión</a></li>
+            <li><a href="misCompras.php">Mis compras</a></li>
+            <li><a href="logout.php">Cerrar sesión</a></li>
           </ul>
         </li>
           <?php }?>
@@ -213,7 +211,14 @@ if ($productos != null) {
             <?php if ($lista_carrito != null) { ?>                  
             <div class="row">
                 <div class="col-md-5 offset-md-7 d-grid gap-2">
+                  <?php if(isset($_SESSION['usuario_correo'])){?>
+                  
                     <a href="pago.php" class="btn btn-primary btn-lg">Realizar pago</a>
+
+                    <?php } else{?>
+
+                      <a href="../html/login.php" class="btn btn-primary btn-lg">Realizar pago</a>
+                      <?php }?>
                 </div>
             </div>
             <?php } ?>
@@ -267,7 +272,7 @@ if ($productos != null) {
 
     <!-- Theme JavaScript -->
     <script src="js/clean-blog.min.js"></script>
-
+              <!-- <script src="http://192.168.1.102/pago.js"></script> -->
     <script>
 
         jQuery('#eliminaModal').on('show.bs.modal', function (event) {

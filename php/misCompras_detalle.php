@@ -7,6 +7,43 @@ require 'correo.php';
 $db = new Database();
 $con = $db->conectar();
 
+$token_session = $_SESSION['token'];
+$orden = $_GET['orden'] ?? null;
+$token = $_GET['token'] ?? null;
+
+
+if ($orden == null || $token == null || $token != $token_session) {
+  header("Location: misCompras.php");
+  exit;
+}
+
+
+$sqlCompra = $con->prepare("SELECT num_ped, id_transaccion, fecha_ped, total_ped FROM pedido WHERE id_transaccion = ? LIMIT 1");
+$sqlCompra->execute([$orden]);
+$rowCompra = $sqlCompra->fetch(PDO::FETCH_ASSOC);
+$num_ped = $rowCompra['num_ped'];
+
+
+
+$sqlDet = $con->prepare("SELECT prod.cod_pro, prod.nombre, prod.precio_venta, proped.cantidad, ped.total_ped    
+    FROM producto prod
+    JOIN producto_pedido proped ON prod.cod_pro = proped.cod_pro
+    JOIN pedido ped ON ped.num_ped = proped.num_ped
+    WHERE proped.num_ped = ?;
+     ");
+
+
+$sqlDet->bindParam(1, $num_ped);
+$sqlDet->execute();
+$rowTr = $sqlDet->fetchAll(PDO::FETCH_ASSOC);
+
+
+
+
+
+
+
+
 $nombre; /*Si nombre esta vacio, es decir, si la variable esta vacía, abajo se ejecuta una página u otra, es decir, la
           página de LOGIN o la página de MI CUENTA con el nombre del usuario. */
 
@@ -21,8 +58,8 @@ if (isset($_SESSION['usuario_correo'])) {
   $nombre = $row['nombre'];
 }
 
-if(isset($_POST['asunto'])){
-  enviarEmail("Mensaje Web","Asunto: ". $_POST['asunto']."<br>Este es el correo de " . $_POST['email'] ."<br>" . $_POST['mensaje'],"tuplegable@outlook.com");
+if (isset($_POST['asunto'])) {
+  enviarEmail("Mensaje Web", "Asunto: " . $_POST['asunto'] . "<br>Este es el correo de " . $_POST['email'] . "<br>" . $_POST['mensaje'], "tuplegable@outlook.com");
   header("LOCATION: mensajeContacto.php");
 }
 ?>
@@ -84,17 +121,17 @@ if(isset($_POST['asunto'])){
       <img src="../img/logo.png" alt="" class="logo" width="200px" />
     </a>
     <ul>
-        <li><a href="../index.php">Inicio</a></li>
+      <li><a href="../index.php">Inicio</a></li>
 
-        <?php if(!isset($nombre)){?>
-          <!-- Si no se recibe el nombre del usuario de la base de datos, te redirige aparece la página de login -->
-          <li><a  href="../html/login.php">Login</a></li>
-        <?php } else{?>
-          <!-- Si vuelves a la página de inicio despúes de haber iniciado sesión, y vuelves a darle a tu nombre de ususario te redirige
+      <?php if (!isset($nombre)) { ?>
+        <!-- Si no se recibe el nombre del usuario de la base de datos, te redirige aparece la página de login -->
+        <li><a href="../html/login.php">Login</a></li>
+      <?php } else { ?>
+        <!-- Si vuelves a la página de inicio despúes de haber iniciado sesión, y vuelves a darle a tu nombre de ususario te redirige
                 a un menu desplegable.-->
-          <li class="dropdown">
-          
-          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+        <li class="dropdown">
+
+          <a class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-user"></i> <?php echo $nombre ?> <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
@@ -103,12 +140,12 @@ if(isset($_POST['asunto'])){
             <li><a href="logout.php">Cerrar sesión</a></li>
           </ul>
         </li>
-          <?php }?>
-        <li><a  class="active" href="contacto.php">Contacto</a></li>
-        <li><a href="tienda.php">Tienda</a></li>
-        <li><a href="carrito.php"><i class="fa-solid fa-cart-shopping"></i> Carrito <span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a></li>
-        
-      </ul>
+      <?php } ?>
+      <li><a href="contacto.php">Contacto</a></li>
+      <li><a href="tienda.php">Tienda</a></li>
+      <li><a href="carrito.php"><i class="fa-solid fa-cart-shopping"></i> Carrito <span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a></li>
+
+    </ul>
   </nav>
 
   <!-- Page Header -->
@@ -125,62 +162,60 @@ if(isset($_POST['asunto'])){
 
   <!-- Main Content -->
 
+  <main>
   <div class="container">
     <div class="row">
-      <div class="col-md-6 col-md-offset-3">
-        <div class="panel panel-login">
-          <div class="panel-heading">
-            <div class="row">
-              <div class="col-6 text-center">
-                <h1>Contáctame</h1>
-              </div>
-            </div>
-            <hr>
+      <!-- Columna para la carta -->
+      <div class="col-12 col-md-4">
+        <div class="card mb-3">
+          <div class="card-header">
+            <h4 class="det"><strong>Detalle de la compra</strong></h4>
           </div>
-
-          <div class="panel-body">
-            <div class="row">
-              <div class="col-lg-12">
-                <form id="login-form" action="contacto.php" method="post" role="form" style="display: block;">
-                  <div class="form-group">
-                    <input type="text" name="nombre" id="nombre " tabindex="1" class="form-control" placeholder="Nombre" value="" required>
-                  </div>
-
-                  <div class="form-group">
-                    <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email" value="" required>
-                  </div>
-
-                  <div class="form-group">
-                    <input type="text" name="asunto" id="asunto" tabindex="1" class="form-control" placeholder="Asunto" required>
-                  </div>
-
-                  <div class="form-group">
-                    <textarea name="mensaje" id="mensaje" class="form-control" cols="61" rows="10" placeholder="Mensaje"></textarea>
-                  </div>
-
-                  <div class="form-group">
-                    <div class="row">
-                      <div class="col-sm-6 col-sm-offset-3">
-                        <input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Enviar">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="row">
-                      <div class="col-lg-12">
-
-                      </div>
-                    </div>
-                  </div>
-                </form>
-
-              </div>
-            </div>
+          <div class="card-body">
+            <p><strong>Fecha: &nbsp;</strong> <?php echo $rowCompra['fecha_ped']; ?> </p>
+            <p><strong>Orden: &nbsp;</strong> <?php echo $rowCompra['id_transaccion']; ?> </p>
+            <p><strong>Total: &nbsp;</strong> <?php echo number_format($rowCompra['total_ped'], 2, ',', '.') . MONEDA ?> </p>
           </div>
+        </div>
+      </div>
+      
+      <!-- Columna para la tabla -->
+      <div class="col-12 col-md-8">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($rowTr as $detalle) {;
+                $precio = $detalle['precio_venta'];
+                $cantidad = $detalle['cantidad'];
+                $subtotal = $precio * $cantidad;
+              ?>
+                <tr>
+                  <td><?php echo $detalle['nombre']; ?></td>
+                  <td><?php echo number_format($precio, 2, ',', '.') . MONEDA; ?></td>   
+                  <td><?php echo $cantidad; ?></td>
+                  <td><?php echo number_format($subtotal, 2, ',', '.') . MONEDA; ?></td>  
+                </tr>
+              <?php } ?>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
   </div>
+</main>
+
+
+
+
 
   <!-- Footer -->
   <footer>
@@ -201,10 +236,10 @@ if(isset($_POST['asunto'])){
   <script src="js/clean-blog.min.js"></script>
 
   <!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<!-- Bootstrap Core JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <!-- Bootstrap Core JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
 </body>

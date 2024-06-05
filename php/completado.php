@@ -1,16 +1,58 @@
 <?php
 require '../config/config.php';
+require '../config/clienteFunciones.php';
 require '../config/database.php';
+require 'correo.php';
 
 $db = new Database();
 $con = $db->conectar();
 
-$sql = $con->prepare("SELECT cod_pro, nombre, precio_venta FROM producto WHERE activo = 1");
-$sql->execute();
-$resultado = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+$id_transaccion = isset($_GET['key']) ? $_GET['key'] : '0';
 
 
-$nombre;
+
+$error = '';
+if ($id_transaccion == '') {
+  $error = 'Error al procesar la petición';
+} else {
+
+  $sql = $con->prepare("SELECT count(num_ped) FROM pedido WHERE id_transaccion=? AND status=?");
+  $sql->execute([$id_transaccion, 'COMPLETED']);
+  if ($sql->fetchColumn() > 0) {
+
+    $sql = $con->prepare("SELECT num_ped, fecha_ped, total_ped FROM pedido WHERE id_transaccion=? AND status=? LIMIT 1");
+    $sql->execute([$id_transaccion, 'COMPLETED']);
+    $row = $sql->fetch(PDO::FETCH_ASSOC); 
+
+
+
+    $num_ped = $row['num_ped'];
+    $fecha_ped = $row['fecha_ped'];
+    $total_ped = $row['total_ped'];
+
+
+    $sqlDet = $con->prepare("SELECT prod.nombre, prod.precio_venta, proped.cantidad
+    FROM pedido ped
+    JOIN producto_pedido proped ON ped.num_ped = proped.num_ped
+    JOIN producto prod ON proped.cod_pro = prod.cod_pro
+    WHERE ped.num_ped = ?;
+     ");
+
+    $sqlDet->bindParam(1, $num_ped);
+    $sqlDet->execute();
+    
+
+
+  } else {
+      $error = 'Error al comprobar la compra';
+  }
+  
+
+}
+
+$nombre; /*Si nombre esta vacio, es decir, si la variable esta vacía, abajo se ejecuta una página u otra, es decir, la
+          página de LOGIN o la página de MI CUENTA con el nombre del usuario. */
 
 if (isset($_SESSION['usuario_correo'])) {
 
@@ -23,6 +65,10 @@ if (isset($_SESSION['usuario_correo'])) {
   $nombre = $row['nombre'];
 }
 
+if(isset($_POST['asunto'])){
+  enviarEmail("Mensaje Web","Asunto: ". $_POST['asunto']."<br>Este es el correo de " . $_POST['email'] ."<br>" . $_POST['mensaje'],"tuplegable@outlook.com");
+  header("LOCATION: mensajeContacto.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -34,22 +80,21 @@ if (isset($_SESSION['usuario_correo'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+
+
   <title>Clean Blog</title>
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
   <!-- Bootstrap Core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+
+
 
   <!-- Theme CSS -->
   <link href="../css/clean-blog.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="../css/style.css" />
- 
+  <link rel="stylesheet" href="../css/login.css">
+
 
   <!-- Custom Fonts -->
   <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -68,13 +113,14 @@ if (isset($_SESSION['usuario_correo'])) {
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
   <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  
 
 
   <!------ Include the above in your HEAD tag ---------->
   <link rel="stylesheet" href="../css/login.css">
   <link rel="stylesheet" href="../css/estilo_letra_menu.css">
   <script src="../js/login.js"></script>
-  
+
   <!-- Navigation -->
   <nav>
     <input type="checkbox" id="check" />
@@ -95,23 +141,23 @@ if (isset($_SESSION['usuario_correo'])) {
                 a un menu desplegable.-->
           <li class="dropdown">
           
-          <a class="dropdown-toggle tienda" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-user"></i> <?php echo $nombre ?> <span class="caret"></span>
+          <a class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-user "></i> <?php echo $nombre ?> <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="miCuenta.php">Mi Cuenta</a></li>
+            <li><a cla href="miCuenta.php">Mi Cuenta</a></li>
             <li><a href="misCompras.php">Mis compras</a></li>
             <li><a href="logout.php">Cerrar sesión</a></li>
-            
           </ul>
         </li>
           <?php }?>
-        <li><a href="contacto.php">Contacto</a></li>
-        <li><a class="active" href="tienda.php">Tienda</a></li>
+        <li><a  href="contacto.php">Contacto</a></li>
+        <li><a href="tienda.php">Tienda</a></li>
         <li><a href="carrito.php"><i class="fa-solid fa-cart-shopping"></i> Carrito <span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a></li>
         
       </ul>
   </nav>
+
   <!-- Page Header -->
   <!-- Set your background image for this header on the line below. -->
   <header class="intro-header" style="background-image: url('../img/home-bg.jpg')">
@@ -126,43 +172,62 @@ if (isset($_SESSION['usuario_correo'])) {
 
   <!-- Main Content -->
   <main>
-    <div class="container">
-      <div class="row row-cols-1 row-cols-md-2 row-cols-md-4 g-9">
-        <?php foreach ($resultado as $row) { ?>
-          <div class="col">
-            <div class="card shadow-sm">
-              <?php
-              
-              $cod_pro = $row['cod_pro'];
-              $imagen = "../img/productos/" . $cod_pro   . "/imagen.png";
+          <div class="container">
 
-              if(!file_exists($imagen)) {
-                $imagen = "../img/productos/no-photo.jpg";
-              }
-      
+          <?php if(strlen($error) > 0) { ?>
 
-              ?>
-              <img src="<?php echo $imagen; ?>">
-              <div class="card-body">
-                <h5 style="color:black" class="card-title"><?php echo $row['nombre']; ?></h5>
-                <p style= "color:black"class="card-text"><?php echo number_format($row['precio_venta'], 2,',' , '.'); ?>€</p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="btn-group">
-                    <a href="details.php?cod_pro=<?php echo $row['cod_pro']; ?>&token=<?php echo hash_hmac('sha1', $row['cod_pro'], KEY_TOKEN);?>" class="btn btn-primary">Detalles</a>
-                  </div>
-                  
-                  <button id="addToCartButton" class="btn btn-success type="button" onclick="addProducto
-                  (<?php echo $row['cod_pro']; ?>, '<?php echo hash_hmac('sha1', $row['cod_pro'], KEY_TOKEN);?>')">Agregar</button>
-
-                  
-                </div>
+            <div class="row">
+              <div class="col">
+                  <h3><?php echo $error ?></h3>
               </div>
             </div>
+
+            <?php } else { ?>
+              <div class="row">
+                <div class="col">
+                  <b>Folio de la compra: </b><?php echo $id_transaccion; ?></br>
+                  <b>Fecha de compra: </b><?php echo $fecha_ped; ?></br>
+                  <b>Total: </b><?php echo number_format($total_ped, 2, ',', '.') . MONEDA; ?></br>
+                </div>
+
+              </div>
+
+
+
+              <div class="row">
+                <div class="col">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Cantidad</th>
+                        <th>Producto</th>
+                        <th>Importe</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                        <?php while($row_det = $sqlDet->fetch(PDO::FETCH_ASSOC)) { 
+                          $importe = $row_det['precio_venta'] * $row_det['cantidad']; ?>
+                          <tr>
+                            <td> <?php echo $row_det['cantidad']; ?> </td>
+                            <td> <?php echo $row_det['nombre']; ?> </td>
+                            <td><?php echo number_format($importe, 2, ',', '.') . MONEDA; ?></td>
+                            
+
+                          </tr>
+                          <?php }?>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <?php } ?>
           </div>
-        <?php } ?>
-      </div>
-    </div>
+
+
+          <h3>Pago realizado con éxito. Gracias por su compra.</h3>
   </main>
+
+  
 
   <!-- Footer -->
   <footer>
@@ -182,27 +247,13 @@ if (isset($_SESSION['usuario_correo'])) {
   <!-- Theme JavaScript -->
   <script src="js/clean-blog.min.js"></script>
 
-  <script>
-    function addProducto(cod_pro, token) {
-      let url = '../clases/carrito.php'
-      let formData = new FormData()
-      formData.append('cod_pro', cod_pro)
-      formData.append('token', token)
+  <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-      fetch(url, {
-          method: 'POST',
-          body: formData,
-          mode: 'cors'
-        }).then(response => response.json())
-        .then(data => {
-          if (data.ok) {
-            let elemento = document.getElementById("num_cart")
-            elemento.innerHTML = data.numero
-          }
-        })
-    }
-  </script>
-  
+<!-- Bootstrap Core JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
 </body>
 
 </html>

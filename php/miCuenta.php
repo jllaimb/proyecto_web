@@ -116,14 +116,15 @@ if (!empty($_POST)) {
             <i class="fas fa-user"></i> <?php echo $nombre ?> <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="../php/miCuenta.php">Mi Cuenta</a></li>
-            <li><a href="../php/logout.php">Cerrar sesión</a></li>
+            <li><a href="miCuenta.php">Mi Cuenta</a></li>
+            <li><a href="misCompras.php">Mis compras</a></li>
+            <li><a href="logout.php">Cerrar sesión</a></li>
           </ul>
         </li>
       <?php } ?>
-      <li><a href="../php/contacto.php">Contacto</a></li>
-      <li><a href="../php/tienda.php">Tienda</a></li>
-      <li><a href="../php/carrito.php"><i class="fa-solid fa-cart-shopping"></i> Carrito <span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a></li>
+      <li><a href="contacto.php">Contacto</a></li>
+      <li><a href="tienda.php">Tienda</a></li>
+      <li><a href="carrito.php"><i class="fa-solid fa-cart-shopping"></i> Carrito <span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a></li>
     </ul>
   </nav>
 
