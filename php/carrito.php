@@ -57,7 +57,7 @@ if ($productos != null) {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Clean Blog</title>
+    <title>TuPlegable</title>
     <link rel='stylesheet' type='text/css' media='screen' href='../css/estiloCarrito.css'>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -109,7 +109,7 @@ if ($productos != null) {
 
         <?php if(!isset($nombre)){?>
           <!-- Si no se recibe el nombre del usuario de la base de datos, te redirige aparece la página de login -->
-          <li><a  href="../html/login.php">Login</a></li>
+          <li><a  href="login.php">Login</a></li>
         <?php } else{?>
           <!-- Si vuelves a la página de inicio despúes de haber iniciado sesión, y vuelves a darle a tu nombre de ususario te redirige
                 a un menu desplegable.-->
@@ -257,7 +257,7 @@ if ($productos != null) {
 
     <!-- Footer -->
     <footer>
-        <p class="copyright text-muted">Copyright &copy; Your Website 2016</p>
+        <p class="copyright text-muted">Copyright &copy; TuPlegable.com 2024</p>
     </footer>
 
     <!-- jQuery -->
@@ -273,78 +273,10 @@ if ($productos != null) {
     <!-- Theme JavaScript -->
     <script src="js/clean-blog.min.js"></script>
               <!-- <script src="http://192.168.1.102/pago.js"></script> -->
-    <script>
-
-        jQuery('#eliminaModal').on('show.bs.modal', function (event) {
-            
-            let button = event.relatedTarget
-            let id = button.getAttribute('data-bs-id')
-            let buttonElimina = eliminaModal.querySelector('.modal-footer #btn-elimina')
-            buttonElimina.value = id                       
-         })
+               
 
 
-        function actualizaCantidad(cantidad, cod_pro) {
-            let url = '../clases/actualizar_carrito.php'
-            let formData = new FormData()
-            formData.append('action', 'agregar')
-            formData.append('cod_pro', cod_pro)
-            formData.append('cantidad', cantidad)
-
-            fetch(url, {
-                    method: 'POST',
-                    body: formData,
-                    mode: 'cors'
-                }).then(response => response.json())
-                .then(data => {
-                    if (data.ok) {
-
-                        let divsubtotal = document.getElementById('subtotal_' + cod_pro)
-                        divsubtotal.innerHTML = data.sub
-
-                        let total = 0.00
-                        let list = document.getElementsByName('subtotal[]')
-
-                        for(let i = 0; i < list.length; i++){
-
-                            total += parseFloat(list[i].innerHTML.replace('.', '').replace(',', '.').replace('€',''))
-                        }
-
-                        document.getElementById('total').innerHTML =
-                         total.toLocaleString('es-ES', { minimumFractionDigits: 2 }).replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "€";
-                         //Este código pone los decimales con comas y los millares con puntos cada 3 números para la suma del subtotal.
-                    }
-                })
-        }
-
-
-
-        function eliminar() {
-        let botonElimina = document.getElementById('btn-elimina')
-        let id = botonElimina.value
-
-
-        let url = '../clases/actualizar_carrito.php'
-        let formData = new FormData()
-        formData.append('action', 'eliminar')
-        formData.append('cod_pro', id)
-
-
-        fetch(url, {
-                method: 'POST',
-                body: formData,
-                mode: 'cors'
-            }).then(response => response.json())
-            .then(data => {
-                if (data.ok) {
-                location.reload()
-                    
-                }
-            })
-        }
-
-        
-    </script>
+    <script src="../js/actualizarEliminarCantidad.js"></script>
 
 </body>
 

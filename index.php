@@ -27,7 +27,7 @@ $nombre = $row['nombre'];
     <meta name="description" content="" />  
     <meta name="author" content="" />
 
-    <title>Clean Blog</title>
+    <title>TuPlegable</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
@@ -78,7 +78,7 @@ $nombre = $row['nombre'];
 
         <?php if(!isset($nombre)){?>
           <!-- Si no se recibe el nombre del usuario de la base de datos, te redirige aparece la página de login -->
-          <li><a  href="html/login.php">Login</a></li>
+          <li><a  href="php/login.php">Login</a></li>
         <?php } else{?>
           <!-- Si vuelves a la página de inicio despúes de haber iniciado sesión, y vuelves a darle a tu nombre de ususario te redirige
                 a un menu desplegable.-->
@@ -222,7 +222,8 @@ $nombre = $row['nombre'];
 
     <!-- Footer -->
     <footer>
-      <p class="copyright text-muted">Copyright &copy; Your Website 2016</p>
+      <p class="copyright text-muted">Copyright &copy; TuPlegable.com 2024</p>
+      <a href="../html/terminos.html">Terminos y condiciones</a>
     </footer>
 
     <!-- jQuery -->

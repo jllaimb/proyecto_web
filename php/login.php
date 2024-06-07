@@ -72,7 +72,7 @@ if (!empty($_POST)) {
   <meta name="author" content="" />
 
 
-  <title>Clean Blog</title>
+  <title>TuPlegable</title>
 
   <!-- Bootstrap Core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
@@ -158,8 +158,10 @@ if (!empty($_POST)) {
             <div class="row">
               <div class="col-lg-12">
 
+               <script src="../js/validarLogin.js"></script>
+
                 <!-- FORMULARIO INICIO SESIÓN -->
-                <form id="login-form" action="login.php" method="post" role="form" style="display: block;">
+                <form name= "logueo" id="login-form" action="login.php" method="post" role="form" style="display: block;" onsubmit="return validarLogin()">
                   <div class="form-group">
                     <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Correo electronico*" value="">
                   </div>
@@ -169,7 +171,7 @@ if (!empty($_POST)) {
                   </div>
 
                   <!-- <div class="form-group text-center">
-                    <input type="checkbox" tabindex="3" class="" name="remember" id="remember">
+                    <input type="checkbox" tabindex="3" class="" name="remember" id="remember"> 
                     <label for="remember"> Recordarme</label>
                   </div> -->
 
@@ -190,6 +192,7 @@ if (!empty($_POST)) {
                       </div>
                     </div>
                   </div>
+                  <p id="error_validacion"></p>
                 </form>
 
                 <div class="col-lg-12">
@@ -206,8 +209,10 @@ if (!empty($_POST)) {
 
 
 
+                <script src="../js/validarRegistro.js"></script>
+
                 <!-- FORMULARIO REGISTRO -->
-                <form id="register-form" action="login.php" method="post" role="form" style="display: none;">
+                <form name="registro" id="register-form" action="login.php" method="post" role="form" style="display: none;" onsubmit="return validarRegistro()">
                   <div class="form-group">
                     <input type="text" name="nombre" id="nombre" tabindex="1" class="form-control <?php echo (in_array('Los campos con * deben de estar rellenos.', $errors) ? 'has-error' : ''); ?>" placeholder="Nombre*" value="">
                   </div>
@@ -240,6 +245,7 @@ if (!empty($_POST)) {
                       <input type="hidden" name="accion" value="registro">
                     </div>
                   </div>
+                  <p id="error_validacion2"></p>
                 </form>
               </div>
             </div>
@@ -251,7 +257,7 @@ if (!empty($_POST)) {
 
   <!-- Footer -->
   <footer>
-    <p class="copyright text-muted">Copyright &copy; Your Website 2016</p>
+    <p class="copyright text-muted">Copyright &copy; TuPlegable.com 2024</p>
   </footer>
 
   <!-- jQuery -->

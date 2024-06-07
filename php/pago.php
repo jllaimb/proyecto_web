@@ -47,7 +47,7 @@ if ($productos != null) {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Clean Blog</title>
+    <title>TuPlegable</title>
     <link rel='stylesheet' type='text/css' media='screen' href='../css/estiloCarrito.css'>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -98,7 +98,7 @@ if ($productos != null) {
 
         <?php if(!isset($nombre)){?>
           <!-- Si no se recibe el nombre del usuario de la base de datos, te redirige aparece la página de login -->
-          <li><a  href="../html/login.php">Login</a></li>
+          <li><a  href="login.php">Login</a></li>
         <?php } else{?>
           <!-- Si vuelves a la página de inicio despúes de haber iniciado sesión, y vuelves a darle a tu nombre de ususario te redirige
                 a un menu desplegable.-->
@@ -256,7 +256,7 @@ if ($productos != null) {
 
     <!-- Footer -->
     <footer>
-        <p class="copyright text-muted">Copyright &copy; Your Website 2016</p>
+        <p class="copyright text-muted">Copyright &copy; TuPlegable.com 2024</p>
     </footer>
 
     <!-- jQuery -->

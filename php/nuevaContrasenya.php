@@ -42,7 +42,7 @@ if (isset($_POST['asunto'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-  <title>Clean Blog</title>
+  <title>TuPlegable</title>
 
   <!-- Bootstrap Core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
@@ -90,7 +90,7 @@ if (isset($_POST['asunto'])) {
       </a>
       <ul>
         <li><a href="../index.php">Inicio</a></li>
-        <li><a class="active" href="../html/login.php">Login</a></li>
+        <li><a class="active" href="login.php">Login</a></li>
         <li><a href="contacto.php">Contacto</a></li>
         <li><a href="tienda.php">Tienda</a></li>
         <li><a href="carrito.php"><i class="fa-solid fa-cart-shopping"></i> Carrito <span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a></li>
@@ -127,7 +127,9 @@ if (isset($_POST['asunto'])) {
               <div class="row">
 
 
-                <form id="register-form" action="nuevaContrasenya.php" method="post" role="form" style="display: block;">
+              <script src="../js/validarNuevaContrasenya.js"></script>
+
+                <form name="nuevaContrasenya" id="register-form" action="nuevaContrasenya.php" method="post" role="form" style="display: block;" onsubmit="return validarNuevaContrasenya()">
                   <div class="form-group">
                     <label for="nuevaContrasenya">Introduzca una nueva nueva contraseña:</label>
                     <input type="password" name="nuevaContrasenya" id="nuevaContrasenya" tabindex="1" class="form-control" placeholder="Nueva contraseña" value="">
@@ -146,6 +148,7 @@ if (isset($_POST['asunto'])) {
                   <input type="hidden" name="email" value="<?php echo $correo ?>">
                   <!-- Para pasar de un formulario a otro la variable. Es oculto.-->
                 </form>
+                <p id="error_validacion"></p>
               </div>
             </div>
 
@@ -178,3 +181,8 @@ if (isset($_POST['asunto'])) {
 
             ?>
   </body>
+
+   <!-- Footer -->
+   <footer>
+    <p class="copyright text-muted">Copyright &copy; TuPlegable.com 2024</p>
+  </footer>

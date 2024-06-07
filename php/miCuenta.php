@@ -66,7 +66,7 @@ if (!empty($_POST)) {
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Mi Cuenta</title>
+  <title>TuPlegable.com 2024</title>
 
   <!-- Bootstrap Core CSS -->
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -109,7 +109,7 @@ if (!empty($_POST)) {
     <ul>
       <li><a href="../index.php">Inicio</a></li>
       <?php if (empty($nombre)) { ?>
-        <li><a class="active" href="../html/login.php">Login</a></li>
+        <li><a class="active" href="login.php">Login</a></li>
       <?php } else { ?>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -185,7 +185,7 @@ if (!empty($_POST)) {
 
   <!-- Footer -->
   <footer>
-    <p class="copyright text-muted">Copyright &copy; Your Website 2016</p>
+    <p class="copyright text-muted">Copyright &copy; TuPlegable.com 2024</p>
   </footer>
 </body>
 

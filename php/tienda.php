@@ -34,7 +34,7 @@ if (isset($_SESSION['usuario_correo'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="" />
   <meta name="author" content="" />
-  <title>Clean Blog</title>
+  <title>TuPlegable</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
@@ -89,7 +89,7 @@ if (isset($_SESSION['usuario_correo'])) {
 
         <?php if(!isset($nombre)){?>
           <!-- Si no se recibe el nombre del usuario de la base de datos, te redirige aparece la página de login -->
-          <li><a  href="../html/login.php">Login</a></li>
+          <li><a  href="login.php">Login</a></li>
         <?php } else{?>
           <!-- Si vuelves a la página de inicio despúes de haber iniciado sesión, y vuelves a darle a tu nombre de ususario te redirige
                 a un menu desplegable.-->
@@ -166,7 +166,7 @@ if (isset($_SESSION['usuario_correo'])) {
 
   <!-- Footer -->
   <footer>
-    <p class="copyright text-muted">Copyright &copy; Your Website 2016</p>
+    <p class="copyright text-muted">Copyright &copy; TuPlegable.com 2024</p>
   </footer>
 
   <!-- jQuery -->
@@ -182,26 +182,9 @@ if (isset($_SESSION['usuario_correo'])) {
   <!-- Theme JavaScript -->
   <script src="js/clean-blog.min.js"></script>
 
-  <script>
-    function addProducto(cod_pro, token) {
-      let url = '../clases/carrito.php'
-      let formData = new FormData()
-      formData.append('cod_pro', cod_pro)
-      formData.append('token', token)
+  
 
-      fetch(url, {
-          method: 'POST',
-          body: formData,
-          mode: 'cors'
-        }).then(response => response.json())
-        .then(data => {
-          if (data.ok) {
-            let elemento = document.getElementById("num_cart")
-            elemento.innerHTML = data.numero
-          }
-        })
-    }
-  </script>
+  <script src="../js/anadirProducto.js"></script>
   
 </body>
 

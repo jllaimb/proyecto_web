@@ -21,7 +21,7 @@ $con = $db->conectar();
   <meta name="author" content="" />
 
 
-  <title>Clean Blog</title>
+  <title>TuPlegable</title>
 
   <!-- Bootstrap Core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
@@ -60,12 +60,12 @@ $con = $db->conectar();
     <label for="check" class="checkbtn">
       <i class="fas fa-bars"></i>
     </label>
-    <a class="enlace" href="../index.html">
+    <a class="enlace" href="../index.php">
       <img src="../img/logo.png" alt="" class="logo" width="200px" />
     </a>
     <ul>
       <li><a href="../index.php">Inicio</a></li>
-      <li><a class="active" href="login.html">Login</a></li>
+      <li><a class="active" href="login.php">Login</a></li>
       <li><a href="contacto.php">Contacto</a></li>
       <li><a href="tienda.php">Tienda</a></li>
       <li><a href="carrito.php"><i class="fa-solid fa-cart-shopping"></i> Carrito <span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a></li>
@@ -115,7 +115,7 @@ $con = $db->conectar();
 
   <!-- Footer -->
   <footer>
-    <p class="copyright text-muted">Copyright &copy; Your Website 2016</p>
+    <p class="copyright text-muted">Copyright &copy; TuPlegable.com 2024</p>
   </footer>
 
   <!-- jQuery -->
