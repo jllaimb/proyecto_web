@@ -8,20 +8,35 @@ $db = new Database();
 $con = $db->conectar();
 
 
+$error = "";
+
+
 
 if (isset($_POST['email'])) {
-    $token = generarToken();
-    echo $token;
 
-    $sql = $con->prepare('UPDATE usuario SET token = ? WHERE correo = ?');
-    $sql->bindParam(1, $token);
-    $sql->bindParam(2, $_POST['email']);
-    $sql->execute();
 
-    enviarEmail("Cambio de contraseña", "Para cambiar su contraseña redirigase a este enlace: <a href='http://localhost/DWEES/Proyecto%20Web/proyecto_web/php/nuevaContrasenya.php?token=$token'>Click aquí</a>", $_POST['email']);
-    header("Location: correo_contrasenya.php");
-    exit;
-}
+    $sql = $con->prepare("SELECT correo FROM usuario WHERE correo = ?");
+    $sql->execute([$_POST['email']]);
+    $row = $sql->fetch(PDO::FETCH_ASSOC);
+
+
+    if ($row != false) {
+        $token = generarToken();
+        echo $token;
+
+        $sql = $con->prepare('UPDATE usuario SET token = ? WHERE correo = ?');
+        $sql->bindParam(1, $token);
+        $sql->bindParam(2, $_POST['email']);
+        $sql->execute();
+
+        enviarEmail("Cambio de contraseña", "Para cambiar su contraseña redirigase a este enlace: <a href='http://localhost/DWEES/Proyecto%20Web/proyecto_web/php/nuevaContrasenya.php?token=$token'>Click aquí</a>", $_POST['email']);
+        header("Location: correo_contrasenya.php");
+        exit;
+    }
+    else {
+        $error = "El correo no se encuentra registrado.";
+    }
+} 
 
 ?>
 
@@ -132,9 +147,16 @@ if (isset($_POST['email'])) {
                                 <p id="error_validacion"></p>
                             </div>
                         </div>
+
+
+                        <?php echo $error; ?>
     </body>
 
-    <!-- Footer -->
-    <footer>
-        <p class="copyright text-muted">Copyright &copy; TuPlegable.com 2024</p>
-    </footer>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+    <a href="terminosCondiciones.php">Terminos y condiciones</a>
+    <p class="copyright text-muted">Copyright &copy; TuPlegable.com 2024</p>
+      
+    </div>
+  </footer>

@@ -2,6 +2,7 @@
 require '../config/database.php';
 require '../config/clienteFunciones.php';
 require '../config/config.php';
+require 'correo.php';
 
 $db = new Database();
 $con = $db->conectar();
@@ -22,10 +23,6 @@ if (isset($_SESSION['usuario_correo'])) {
 
 
 $errors = [];
-
-
-
-
 if (!empty($_POST)) {
   if ($_POST['accion'] == 'registro') {
     $nombre = trim($_POST['nombre']);
@@ -36,13 +33,26 @@ if (!empty($_POST)) {
 
     // VERIFICAR SI LOS CAMPOS NO ESTAN VACIOS
     if (!empty($nombre) && !empty($apellidos) && !empty($NIF) && !empty($correo) && !empty($contrasenya)) {
-      registrar($NIF, $nombre, $apellidos, $correo, $contrasenya, null, null, null, $con);
+
+      //PARA COMPROBAR QUE EL CORREO NO SE ENCUENTRE YA REGISTRADO 
+      $sql = $con->prepare("SELECT correo FROM usuario WHERE correo = ?");
+      $sql->execute([$correo]);
+      $row = $sql->fetch(PDO::FETCH_ASSOC);
+
+      if($row == false) {
+
+        registrar($NIF, $nombre, $apellidos, $correo, $contrasenya, null, null, null, $con);
+       
+      } else {
+        $errors[] = "Este correo ya se encuentra registrado.";
+        
+      }
+
+      
     } else {
       $errors[] = "Los campos con * deben de estar rellenos.";
     }
   }
-
-
 
   //PARA EL LOGUEO
   if ($_POST['accion'] == 'login') {
@@ -55,8 +65,6 @@ if (!empty($_POST)) {
     }
   }
 }
-
-
 ?>
 
 
@@ -106,6 +114,7 @@ if (!empty($_POST)) {
   <link rel="stylesheet" href="../css/estilo_letra_menu.css">
   <script src="../js/login.js"></script>
   <!-- Navigation -->
+
   <nav>
     <input type="checkbox" id="check" />
     <label for="check" class="checkbtn">
@@ -158,23 +167,16 @@ if (!empty($_POST)) {
             <div class="row">
               <div class="col-lg-12">
 
-               <script src="../js/validarLogin.js"></script>
+                <script src="../js/validarLogin.js"></script>
 
                 <!-- FORMULARIO INICIO SESIÓN -->
-                <form name= "logueo" id="login-form" action="login.php" method="post" role="form" style="display: block;" onsubmit="return validarLogin()">
+                <form name="logueo" id="login-form" action="login.php" method="post" role="form" style="display: block;" onsubmit="return validarLogin()">
                   <div class="form-group">
                     <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Correo electronico*" value="">
                   </div>
-
                   <div class="form-group">
                     <input type="password" name="contrasenya" id="contrasenya" tabindex="2" class="form-control" placeholder="Contraseña*">
                   </div>
-
-                  <!-- <div class="form-group text-center">
-                    <input type="checkbox" tabindex="3" class="" name="remember" id="remember"> 
-                    <label for="remember"> Recordarme</label>
-                  </div> -->
-
                   <div class="form-group">
                     <div class="row">
                       <div class="col-sm-6 col-sm-offset-3">
@@ -196,6 +198,7 @@ if (!empty($_POST)) {
                 </form>
 
                 <div class="col-lg-12">
+                  
                   <?php if (!empty($errors)) : ?>
                     <div class="alert alert-danger">
 
@@ -206,9 +209,6 @@ if (!empty($_POST)) {
                     </div>
                   <?php endif; ?>
                 </div>
-
-
-
                 <script src="../js/validarRegistro.js"></script>
 
                 <!-- FORMULARIO REGISTRO -->
@@ -255,9 +255,28 @@ if (!empty($_POST)) {
     </div>
   </div>
 
+  <?php
+  if (isset($_POST["nombre"])) {
+    enviarEmail(
+      "TuPlegable.com, nuevo usuario",
+
+      "<b>¡Hola {$_POST['nombre']}!</b> <p>Bienvenido/a a TuPlegable.com</p>",
+
+      $_POST['correo']
+    );
+  }
+  ?>
+
+
+
   <!-- Footer -->
-  <footer>
+ <!-- Footer -->
+ <footer class="footer">
+    <div class="footer-container">
+    <a href="terminosCondiciones.php">Terminos y condiciones</a>
     <p class="copyright text-muted">Copyright &copy; TuPlegable.com 2024</p>
+      
+    </div>
   </footer>
 
   <!-- jQuery -->

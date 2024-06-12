@@ -9,7 +9,7 @@ use PHPMailer\PHPMailer\Exception;
 require '../vendor/autoload.php';
 
 //Create an instance; passing `true` enables exceptions
-function enviarEmail($asunto,$mensaje,$correo,){
+function enviarEmail($asunto,$mensaje,$correo){
 
     try {
         $mail = new PHPMailer(true);
@@ -47,8 +47,6 @@ function enviarEmail($asunto,$mensaje,$correo,){
         echo "Error al enviar: {$mail->ErrorInfo}";
     }
 }
-
-
 
 
 ?>

@@ -25,10 +25,8 @@ if (isset($_SESSION['usuario_correo'])) {
 }
 
 
-
-
-$cod_pro = isset($_GET['cod_pro']) ? $_GET['cod_pro'] : '';
-$token = isset($_GET['token']) ? $_GET['token'] : '';
+$cod_pro = isset($_GET['cod_pro']) ? $_GET['cod_pro'] : '';  // Esta sintaxis comprueba si $_GET['cod_pro'] esta definido, 
+$token = isset($_GET['token']) ? $_GET['token'] : '';         //si no lo esta se asigna las comillas vacias
 
 if ($cod_pro == '' || $token == '') {
   echo 'Error al procesar la petición';
@@ -46,7 +44,6 @@ if ($cod_pro == '' || $token == '') {
       $sql->execute([$cod_pro]);
       $row = $sql->fetch(PDO::FETCH_ASSOC);
 
-
       $nombre_producto = $row['nombre'];
       $descripcion = $row['descripcion'];
       $precio_venta = $row['precio_venta'];
@@ -58,7 +55,6 @@ if ($cod_pro == '' || $token == '') {
       if (!file_exists($rutaImg)) {
         $rutaImg = 'img/productos/no-photo.jpg';
       }
-
 
       $images = array();
       if (file_exists($dir_images)) {
@@ -196,12 +192,12 @@ if ($cod_pro == '' || $token == '') {
 
 
               <?php
-              $dir = '../img/productos/' . $cod_pro . '/carrusel/'; // Reemplaza 'tu_carpeta_de_imagenes/' con la ruta de tu carpeta de imágenes
+              $dir = '../img/productos/' . $cod_pro . '/carrusel/';
               $imagenes = glob($dir . '*.{jpg,png,gif}', GLOB_BRACE);
 
               if (!empty($imagenes)) {
                 foreach ($imagenes as $key => $img) {
-                  $nombre_productoArchivo = basename($img); // Obtiene el nombre del archivo de la ruta completa
+                  $nombre_productoArchivo = basename($img); 
                   if ($nombre_productoArchivo != "imagen.png") {
                     echo "<div class='carousel-item'>
             <img src='$img' class='d-block w-100'>
@@ -257,8 +253,7 @@ if ($cod_pro == '' || $token == '') {
 
 
           <div class="d-grid gap-3 col-10 mx-auto">
-            <button style="color: white; background-color: orangered;" class="btn btn-primary" type="button">Comprar ahora</button>
-            <button style="color: white;" class="btn btn-outline-primary" type="button" onclick="addProducto(<?php echo
+            <button style="color: white; background-color: orangered;" class="btn btn-primary" type="button" onclick="addProducto(<?php echo
                                                                                                               $cod_pro; ?>, '<?php echo $token_tmp ?>')">Agregar al carrito</button>
 
           </div>
@@ -269,8 +264,12 @@ if ($cod_pro == '' || $token == '') {
   </main>
 
   <!-- Footer -->
-  <footer>
+  <footer class="footer">
+    <div class="footer-container">
+    <a href="terminosCondiciones.php">Terminos y condiciones</a>
     <p class="copyright text-muted">Copyright &copy; TuPlegable.com 2024</p>
+      
+    </div>
   </footer>
 
   <!-- jQuery -->

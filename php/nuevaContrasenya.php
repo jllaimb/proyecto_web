@@ -30,11 +30,6 @@ if (isset($_GET['token'])) {
 
 
 
-if (isset($_POST['asunto'])) {
-  enviarEmail("Mensaje Web", "Asunto: " . $_POST['asunto'] . "<br>Este es el correo de " . $_POST['email'] . "<br>" . $_POST['mensaje'], "tuplegable@outlook.com");
-  header("LOCATION: mensajeContacto.php");
-}
-
 ?>
 
 <head>
@@ -129,6 +124,8 @@ if (isset($_POST['asunto'])) {
 
               <script src="../js/validarNuevaContrasenya.js"></script>
 
+                  <!-- FORMULARIO PARA CAMBIAR LA CONTRASEÑA -->
+                   
                 <form name="nuevaContrasenya" id="register-form" action="nuevaContrasenya.php" method="post" role="form" style="display: block;" onsubmit="return validarNuevaContrasenya()">
                   <div class="form-group">
                     <label for="nuevaContrasenya">Introduzca una nueva nueva contraseña:</label>
@@ -160,19 +157,16 @@ if (isset($_POST['asunto'])) {
               $repetirContrasenya = hash("sha512", $_POST["repetirContrasenya"]);
 
 
-              // Verificar si las contraseñas coinciden
+              // Aquí se verifican si las contraseñas coinciden
               if ($nuevaContrasenya == $repetirContrasenya) {
 
-                $email = trim($_POST['email']);;
-                // Aquí puedes agregar la lógica para cambiar la contraseña
-                // por ejemplo, actualizando la contraseña en una base de datos o en un archivo
-
+                $email = trim($_POST['email']);
                 cambiarContrasenya($nuevaContrasenya, $email, $con);
 
-                // También puedes mostrar un mensaje de éxito después de cambiar la contraseña
+                // Se muestra un mensaje de éxito después de cambiar la contraseña
                 echo "<h4>Contraseña cambiada con éxito.</h4>";
               } else {
-                // Las contraseñas no coinciden, muestra un mensaje de error
+                // Si las contraseñas no coinciden se muestra un mensaje de error
                 echo "<h4>Error: Las contraseñas no coinciden.</h4>";
               }
             }
@@ -182,7 +176,11 @@ if (isset($_POST['asunto'])) {
             ?>
   </body>
 
-   <!-- Footer -->
-   <footer>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+    <a href="terminosCondiciones.php">Terminos y condiciones</a>
     <p class="copyright text-muted">Copyright &copy; TuPlegable.com 2024</p>
+      
+    </div>
   </footer>

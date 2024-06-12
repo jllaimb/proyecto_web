@@ -122,9 +122,9 @@ if ($productos != null) {
           </ul>
         </li>
       <?php } ?>
-      <li><a href="contacto.php">Contacto</a></li>
+      <li><a class="active" href="contacto.php">Contacto</a></li>
       <li><a href="tienda.php">Tienda</a></li>
-      <li><a class="active" href="carrito.php"><i class="fa-solid fa-cart-shopping"></i> Carrito <span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a></li>
+      <li><a  href="carrito.php"><i class="fa-solid fa-cart-shopping"></i> Carrito <span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a></li>
 
     </ul>
   </nav>
@@ -168,9 +168,13 @@ if ($productos != null) {
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer>
+ <!-- Footer -->
+ <footer class="footer">
+    <div class="footer-container">
+    <a href="terminosCondiciones.php">Terminos y condiciones</a>
     <p class="copyright text-muted">Copyright &copy; TuPlegable.com 2024</p>
+      
+    </div>
   </footer>
 
   <!-- jQuery -->

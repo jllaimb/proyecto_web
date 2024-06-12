@@ -98,35 +98,7 @@ if (!empty($_POST)) {
   <script src="../js/login.js"></script>
 
   <!-- Navigation -->
-  <nav>
-    <input type="checkbox" id="check">
-    <label for="check" class="checkbtn">
-      <i class="fas fa-bars"></i>    
-    </label>
-    <a class="enlace" href="../index.php">
-      <img src="../img/logo.png" alt="" class="logo" width="200px">
-    </a>
-    <ul>
-      <li><a href="../index.php">Inicio</a></li>
-      <?php if (empty($nombre)) { ?>
-        <li><a class="active" href="login.php">Login</a></li>
-      <?php } else { ?>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-user"></i> <?php echo $nombre ?> <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu">
-            <li><a href="miCuenta.php">Mi Cuenta</a></li>
-            <li><a href="misCompras.php">Mis compras</a></li>
-            <li><a href="logout.php">Cerrar sesión</a></li>
-          </ul>
-        </li>
-      <?php } ?>
-      <li><a href="contacto.php">Contacto</a></li>
-      <li><a href="tienda.php">Tienda</a></li>
-      <li><a href="carrito.php"><i class="fa-solid fa-cart-shopping"></i> Carrito <span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a></li>
-    </ul>
-  </nav>
+  <?php include "menu.php"?>
 
   <!-- Page Header -->
   <header class="intro-header" style="background-image: url('../img/home-bg.jpg')">
@@ -138,12 +110,13 @@ if (!empty($_POST)) {
       </div>
     </div>
   </header>
+  <script src="../js/validar_miCuenta.js"></script>
 
   <!-- Main Content -->
   <main>
     <h3 class="miCuenta">Mi cuenta / Modificar datos</h3>
     <hr>
-    <form action="datosModificados.php" method="post" class="mi-cuenta-form">
+    <form name="miCuenta" action="datosModificados.php" method="post" class="mi-cuenta-form" onsubmit="return validarMiCuenta()">
       <div class="form-group">
         <label for="nombre">Nombre:</label>
         <input type="text" name="nombre" value='<?php echo $nombre ?>' class="form-control">
@@ -170,10 +143,12 @@ if (!empty($_POST)) {
       </div>
       <div class="form-group">
         <label for="CP">Código postal:</label>
-        <input type="text" name="CP" id="CP" pattern="[0-9]{5}" value='<?php echo $codigo_postal ?>' class="form-control">
+        <input type="text" name="CP" id="CP" value='<?php echo $codigo_postal ?>' class="form-control">
       </div>
       <button type="submit" name="accion" value="Modificar datos" class="btn btn-primary">Modificar datos</button>
     </form>
+
+    <p id="error_validacion3"></p>
 
     <?php  
     if(isset($_SESSION['mensaje'])) {
@@ -184,8 +159,12 @@ if (!empty($_POST)) {
   </main>
 
   <!-- Footer -->
-  <footer>
+  <footer class="footer">
+    <div class="footer-container">
+    <a href="terminosCondiciones.php">Terminos y condiciones</a>
     <p class="copyright text-muted">Copyright &copy; TuPlegable.com 2024</p>
+      
+    </div>
   </footer>
 </body>
 

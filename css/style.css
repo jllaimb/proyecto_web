@@ -22,6 +22,10 @@ nav {
     margin-top: -72px;
 }
 
+.logo:hover {
+    cursor: pointer;
+}
+
 nav ul {
     float: right;
     margin-right: 20px;
@@ -112,6 +116,9 @@ p{
 
 
 
+.dropdown-toggle::after{
+    display: none;
+}
 
 
 
@@ -167,8 +174,7 @@ p{
 .miCuenta{
     color: white;
     font-weight: bold;
-    text-align: c
-    enter;
+    text-align: center;
 }
 
 h3 {
@@ -213,3 +219,48 @@ h4 {
 #error_validacion2 {
     color: black;
 }
+
+#error_validacion3 {
+    color: white;
+}
+
+.terminos {
+    color: white;
+}
+.apartado {
+    font-weight: bold;
+}
+
+.footer {
+    background-color: #242424; /* Fondo del footer */
+    padding: 20px 0; /* Espaciado alrededor del contenido del footer */
+  }
+  
+  .footer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 20px; /* Espacio entre los elementos del footer */
+  }
+  
+  .footer-container p,
+
+  .footer-container a {
+    color: #ffffff; /* Color del texto */
+    margin: 0; /* Eliminar márgenes predeterminados */
+    font-size: 1.5rem;
+  }
+  
+  .footer-container a {
+    text-decoration: none; /* Eliminar subrayado en los enlaces */
+    color: #ffffff; /* Color del enlace */
+  }
+  
+  .footer-container a:hover {
+    text-decoration: underline; /* Subrayado al pasar el mouse */
+  }
+
+ 
+  
+

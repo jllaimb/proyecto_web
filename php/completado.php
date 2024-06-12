@@ -65,10 +65,6 @@ if (isset($_SESSION['usuario_correo'])) {
   $nombre = $row['nombre'];
 }
 
-if(isset($_POST['asunto'])){
-  enviarEmail("Mensaje Web","Asunto: ". $_POST['asunto']."<br>Este es el correo de " . $_POST['email'] ."<br>" . $_POST['mensaje'],"tuplegable@outlook.com");
-  header("LOCATION: mensajeContacto.php");
-}
 ?>
 
 <!DOCTYPE html>
@@ -229,9 +225,13 @@ if(isset($_POST['asunto'])){
 
   
 
-  <!-- Footer -->
-  <footer>
+ <!-- Footer -->
+ <footer class="footer">
+    <div class="footer-container">
+    <a href="terminosCondiciones.php">Terminos y condiciones</a>
     <p class="copyright text-muted">Copyright &copy; TuPlegable.com 2024</p>
+      
+    </div>
   </footer>
 
   <!-- jQuery -->

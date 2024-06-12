@@ -184,9 +184,13 @@ if (isset($_SESSION['usuario_correo'])) {
     </main>
 
     <!-- Footer -->
-    <footer>
-        <p class="copyright text-muted">Copyright &copy; TuPlegable.com 2024</p>
-    </footer>
+  <footer class="footer">
+    <div class="footer-container">
+    <a href="terminosCondiciones.php">Terminos y condiciones</a>
+    <p class="copyright text-muted">Copyright &copy; TuPlegable.com 2024</p>
+      
+    </div>
+  </footer>
 
     <!-- jQuery -->
     <script src="vendor/jquery/jquery.min.js"></script>

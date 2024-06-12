@@ -43,7 +43,6 @@ function login($correo, $contrasenya, $con)
   $sql->bindParam(1, $correo);
   $sql->execute();
 
-
   if ($row = $sql->fetch(PDO::FETCH_ASSOC)) {   //SI DEVUELVE UNA FILA, SE ASIGNA A LA VARIABLE ROW
     $contrasenya = hash("sha512", $contrasenya);
 

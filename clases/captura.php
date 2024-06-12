@@ -14,6 +14,7 @@ echo '<pre>';
 print_r($datos);
 echo '</pre>';
 
+//AQUÍ SE OBTIENEN LOS DATOS QUE GENERA PAYPAL UNA VEZ REALIZADO EL PAGO
 
 if(is_array($datos)){
 
@@ -50,16 +51,37 @@ if(is_array($datos)){
     // ESTO ES PARA INSERTAR LOS DATOS EN LA TABLA DE PRODUCTO_PEDIDO DEPENDIENDO DE SI SE HA REALIZADO UN PEDIDO O NO
     if($num_pedido > 0) {
         $productos = isset($_SESSION['carrito']['productos']) ? $_SESSION['carrito']['productos'] : null;
-
+    
         if ($productos != null) {
             foreach ($productos as $clave => $cantidad) {
-
-                    $sql_insert_productopedido = $con->prepare("INSERT INTO producto_pedido (cod_pro, num_ped, cantidad) VALUES (?,?,?)");
-                    $sql_insert_productopedido->execute([$clave, $num_pedido, $cantidad]);
+    
+                // Insertar el producto en el pedido
+                $sql_insert_productopedido = $con->prepare("INSERT INTO producto_pedido (cod_pro, num_ped, cantidad) VALUES (?,?,?)");
+                $sql_insert_productopedido->execute([$clave, $num_pedido, $cantidad]);
+    
+                // Actualizar las existencias del producto
+                $sql = $con->prepare('UPDATE producto SET existencias = existencias - ? WHERE cod_pro = ?');
+                $sql->bindParam(1, $cantidad);
+                $sql->bindParam(2, $clave);
+                $sql->execute();
+    
+                // Obtener las existencias actuales después de la actualización
+                $sql = $con->prepare('SELECT existencias FROM producto WHERE cod_pro = ?');
+                $sql->bindParam(1, $clave);
+                $sql->execute();
+                $result = $sql->fetch(PDO::FETCH_ASSOC);
+    
+                if ($result && $result['existencias'] == 0) {
+                    // Si las existencias son cero, actualizar el estado del producto a inactivo
+                    $sql = $con->prepare('UPDATE producto SET activo = 0 WHERE cod_pro = ?');
+                    $sql->bindParam(1, $clave);
+                    $sql->execute();
+                }
             }
         }
         unset($_SESSION['carrito']);
     }
+    
     
 
 }

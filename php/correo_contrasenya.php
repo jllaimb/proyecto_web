@@ -113,9 +113,13 @@ $con = $db->conectar();
 
 
 
-  <!-- Footer -->
-  <footer>
+ <!-- Footer -->
+ <footer class="footer">
+    <div class="footer-container">
+    <a href="terminosCondiciones.php">Terminos y condiciones</a>
     <p class="copyright text-muted">Copyright &copy; TuPlegable.com 2024</p>
+      
+    </div>
   </footer>
 
   <!-- jQuery -->

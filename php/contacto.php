@@ -6,7 +6,6 @@ require 'correo.php';
 
 $db = new Database();
 $con = $db->conectar();
-
 $nombre; /*Si nombre esta vacio, es decir, si la variable esta vacía, abajo se ejecuta una página u otra, es decir, la
           página de LOGIN o la página de MI CUENTA con el nombre del usuario. */
 
@@ -75,41 +74,7 @@ if(isset($_POST['asunto'])){
   <script src="../js/login.js"></script>
 
   <!-- Navigation -->
-  <nav>
-    <input type="checkbox" id="check" />
-    <label for="check" class="checkbtn">
-      <i class="fas fa-bars"></i>
-    </label>
-    <a class="enlace" href="../index.php">
-      <img src="../img/logo.png" alt="" class="logo" width="200px" />
-    </a>
-    <ul>
-        <li><a href="../index.php">Inicio</a></li>
-
-        <?php if(!isset($nombre)){?>
-          <!-- Si no se recibe el nombre del usuario de la base de datos, te redirige aparece la página de login -->
-          <li><a  href="login.php">Login</a></li>
-        <?php } else{?>
-          <!-- Si vuelves a la página de inicio despúes de haber iniciado sesión, y vuelves a darle a tu nombre de ususario te redirige
-                a un menu desplegable.-->
-          <li class="dropdown">
-          
-          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-user"></i> <?php echo $nombre ?> <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu">
-            <li><a cla href="miCuenta.php">Mi Cuenta</a></li>
-            <li><a href="misCompras.php">Mis compras</a></li>
-            <li><a href="logout.php">Cerrar sesión</a></li>
-          </ul>
-        </li>
-          <?php }?>
-        <li><a  class="active" href="contacto.php">Contacto</a></li>
-        <li><a href="tienda.php">Tienda</a></li>
-        <li><a href="carrito.php"><i class="fa-solid fa-cart-shopping"></i> Carrito <span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a></li>
-        
-      </ul>
-  </nav>
+  <?php include "menu.php"?>
 
   <!-- Page Header -->
   <!-- Set your background image for this header on the line below. -->
@@ -124,7 +89,6 @@ if(isset($_POST['asunto'])){
   </header>
 
   <!-- Main Content -->
-
   <div class="container">
     <div class="row">
       <div class="col-md-6 col-md-offset-3">
@@ -138,10 +102,12 @@ if(isset($_POST['asunto'])){
             <hr>
           </div>
 
+          <script src="../js/validarMensajeContacto.js"></script>
+
           <div class="panel-body">
             <div class="row">
               <div class="col-lg-12">
-                <form id="login-form" action="contacto.php" method="post" role="form" style="display: block;">
+                <form name="mensajeContacto" id="login-form" action="contacto.php" method="post" role="form" style="display: block;" onsubmit="return validarMensajeContacto()">
                   <div class="form-group">
                     <input type="text" name="nombre" id="nombre " tabindex="1" class="form-control" placeholder="Nombre" value="" required>
                   </div>
@@ -172,6 +138,7 @@ if(isset($_POST['asunto'])){
                       </div>
                     </div>
                   </div>
+                  <p id="error_validacion2"></p>
                 </form>
 
               </div>
@@ -182,9 +149,13 @@ if(isset($_POST['asunto'])){
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer>
+ <!-- Footer -->
+ <footer class="footer">
+    <div class="footer-container">
+    <a href="terminosCondiciones.php">Terminos y condiciones</a>
     <p class="copyright text-muted">Copyright &copy; TuPlegable.com 2024</p>
+      
+    </div>
   </footer>
 
   <!-- jQuery -->
